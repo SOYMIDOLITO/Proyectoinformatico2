@@ -14,9 +14,13 @@ $sql = "INSERT INTO usuarios (id_usuario, nombre_usuario, contrasena)
         VALUES ('$id_usuario', '$nombre_usuario', '$contrasena')";
 
 if (mysqli_query($conexion, $sql)) {
-    echo "Usuario guardado correctamente";
+
+    echo "♥ Usuario registrado correctamente ♥";
+
 } else {
+
     echo "Error al guardar el usuario: " . mysqli_error($conexion);
+
 }
 
 mysqli_close($conexion);

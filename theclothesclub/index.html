@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -521,6 +522,70 @@ footer a:hover {
 
 
 /* =========================
+   CARTEL DE REGISTRO
+========================= */
+
+.mensaje {
+    display: none;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 350px;
+
+    padding: 25px;
+
+    border: 3px solid #EDABBE;
+
+    background-color: #411E57;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 0 25px rgba(65, 30, 87, 0.8);
+
+    z-index: 1000;
+}
+
+
+.mensaje.exito {
+    display: block;
+}
+
+
+.mensaje button {
+    margin-top: 15px;
+
+    padding: 8px 20px;
+
+    border: 2px solid #EDABBE;
+
+    background-color: #DE5C8F;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.mensaje button:hover {
+    background-color: #872D72;
+}
+
+
+/* =========================
    RESPONSIVE
 ========================= */
 
@@ -584,426 +649,451 @@ footer a:hover {
 
 </head>
 
-
 <body>
 
 <div class="page">
 
+<header>
 
-    <!-- =========================
-         ENCABEZADO
-    ========================== -->
+```
+<div class="logo">
+    THE CLOTHES CLUB
+</div>
 
-    <header>
+<div class="subtitle">
+    ♥ tu armario, tu estilo, tu mundo ♥
+</div>
 
-        <div class="logo">
-            THE CLOTHES CLUB
+<div class="sparkle">
+    ✦　✧　★　✦　✧
+</div>
+```
+
+</header>
+
+<div class="content">
+
+<aside>
+
+```
+<div class="panel">
+
+    <div class="panel-title">
+        ★ MENÚ PRINCIPAL ★
+    </div>
+
+    <div class="menu">
+
+        <a href="#" class="menu-button">
+            ⌂　inicio
+        </a>
+
+        <a href="#" class="menu-button">
+            ♕　mi armario
+        </a>
+
+        <a href="#" class="menu-button">
+            ♧　outfits
+        </a>
+
+        <a href="#" class="menu-button">
+            ◉　colores
+        </a>
+
+        <a href="#" class="menu-button">
+            ♟　comunidad
+        </a>
+
+        <a href="#" class="menu-button">
+            ★　mi perfil
+        </a>
+
+        <a href="#" class="menu-button">
+            ?　ayuda
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="panel quote">
+
+    <div class="panel-title">
+        ★ FRASE DEL DÍA ★
+    </div>
+
+    <p>
+        "La moda pasa,<br>
+        el estilo queda."
+    </p>
+
+    <div class="sparkle">
+        ♥ ✦ ♥
+    </div>
+
+</div>
+```
+
+</aside>
+
+<main>
+
+```
+<section class="welcome">
+
+    <h1>
+        ♥ ¡bienvenida a THE CLOTHES CLUB! ♥
+    </h1>
+
+    <p>
+        THE CLOTHES CLUB es tu espacio para organizar tu ropa,
+        descubrir combinaciones increíbles, conocer tu estilo
+        y conectar con personas que comparten tus mismos intereses.
+    </p>
+
+    <p class="slogan">
+        creá. combiná. inspirate. conectá. ✦
+    </p>
+
+</section>
+
+
+<div class="features-title">
+    ✦ ¿qué podés hacer? ✦
+</div>
+
+
+<section class="features">
+
+
+    <div class="feature">
+
+        <h3>
+            mi armario
+        </h3>
+
+        <div class="icon">
+            👕
         </div>
 
-        <div class="subtitle">
-            ♥ tu armario, tu estilo, tu mundo ♥
-        </div>
-
-        <div class="sparkle">
-            ✦　✧　★　✦　✧
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         CONTENIDO
-    ========================== -->
-
-    <div class="content">
-
-
-        <!-- =====================
-             MENÚ
-        ====================== -->
-
-        <aside>
-
-            <div class="panel">
-
-                <div class="panel-title">
-                    ★ MENÚ PRINCIPAL ★
-                </div>
-
-                <div class="menu">
-
-                    <a href="#" class="menu-button">
-                        ⌂　inicio
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ♕　mi armario
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ♧　outfits
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ◉　colores
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ♟　comunidad
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ★　mi perfil
-                    </a>
-
-                    <a href="#" class="menu-button">
-                        ?　ayuda
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel quote">
-
-                <div class="panel-title">
-                    ★ FRASE DEL DÍA ★
-                </div>
-
-                <p>
-                    "La moda pasa,<br>
-                    el estilo queda."
-                </p>
-
-                <div class="sparkle">
-                    ♥ ✦ ♥
-                </div>
-
-            </div>
-
-        </aside>
-
-
-        <!-- =====================
-             CENTRO
-        ====================== -->
-
-        <main>
-
-            <section class="welcome">
-
-                <h1>
-                    ♥ ¡bienvenida a THE CLOTHES CLUB! ♥
-                </h1>
-
-                <p>
-                    THE CLOTHES CLUB es tu espacio para organizar tu ropa,
-                    descubrir combinaciones increíbles, conocer tu estilo
-                    y conectar con personas que comparten tus mismos intereses.
-                </p>
-
-                <p class="slogan">
-                    creá. combiná. inspirate. conectá. ✦
-                </p>
-
-            </section>
-
-
-            <div class="features-title">
-                ✦ ¿qué podés hacer? ✦
-            </div>
-
-
-            <section class="features">
-
-
-                <div class="feature">
-
-                    <h3>
-                        mi armario
-                    </h3>
-
-                    <div class="icon">
-                        👕
-                    </div>
-
-                    <p>
-                        Guardá todas tus prendas
-                        y organizalas como más
-                        te guste.
-                    </p>
-
-                    <span class="more">
-                        »»
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <h3>
-                        outfits
-                    </h3>
-
-                    <div class="icon">
-                        👗
-                    </div>
-
-                    <p>
-                        Obtené ideas de outfits
-                        con la ropa que ya tenés
-                        en tu armario.
-                    </p>
-
-                    <span class="more">
-                        »»
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <h3>
-                        colores
-                    </h3>
-
-                    <div class="icon">
-                        🎨
-                    </div>
-
-                    <p>
-                        Descubrí gamas de colores
-                        que combinan con vos
-                        y tu estilo.
-                    </p>
-
-                    <span class="more">
-                        »»
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <h3>
-                        comunidad
-                    </h3>
-
-                    <div class="icon">
-                        💬
-                    </div>
-
-                    <p>
-                        Chateá, compartí tus looks
-                        y hacé amigos con tus
-                        mismos gustos.
-                    </p>
-
-                    <span class="more">
-                        »»
-                    </span>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <h3>
-                        perfil
-                    </h3>
-
-                    <div class="icon">
-                        ⭐
-                    </div>
-
-                    <p>
-                        Personalizá tu perfil
-                        y mostrá al mundo
-                        tu estilo único.
-                    </p>
-
-                    <span class="more">
-                        »»
-                    </span>
-
-                </div>
-
-
-            </section>
-
-        </main>
-
-
-        <!-- =====================
-             COLUMNA DERECHA
-        ====================== -->
-
-        <aside>
-
-
-            <div class="panel">
-
-                <div class="panel-title">
-                    ♥ INICIAR SESIÓN ♥
-                </div>
-
-                <form action="guardar_usuario.php" method="POST">
-
-
-                    <!-- ID DE USUARIO -->
-
-                    <label>
-                        ID de usuario:
-                    </label>
-
-                    <input
-                        type="text"
-                        name="id_usuario"
-                        inputmode="numeric"
-                        pattern="[0-9]{4}"
-                        minlength="4"
-                        maxlength="4"
-                        placeholder="Ej: 1234"
-                        required
-                    >
-
-
-                    <!-- NOMBRE DE USUARIO -->
-
-                    <label>
-                        usuario:
-                    </label>
-
-                    <input
-                        type="text"
-                        name="nombre_usuario"
-                        required
-                    >
-
-
-                    <!-- CONTRASEÑA -->
-
-                    <label>
-                        contraseña:
-                    </label>
-
-                    <input
-                        type="password"
-                        name="contraseña"
-                        required
-                    >
-
-
-                    <!-- BOTÓN -->
-
-                    <button
-                        type="submit"
-                        class="login-button"
-                    >
-                        entrar
-                    </button>
-
-                </form>
-
-
-                <div class="login-links">
-
-                    <a href="#">
-                        ¿olvidaste tu contraseña?
-                    </a>
-
-                    <br><br>
-
-                    <a href="#">
-                        [ registrate aquí ]
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel news">
-
-                <div class="panel-title">
-                    ★ NOVEDADES ★
-                </div>
-
-
-                <p>
-                    <span>★</span>
-                    nuevo en THE CLOTHES CLUB:
-                    ahora podés guardar tus outfits favoritos.
-                </p>
-
-
-                <p>
-                    <span>★</span>
-                    sumate a los grupos de la comunidad.
-                </p>
-
-
-                <p>
-                    <span>★</span>
-                    pronto: más opciones para personalizar tu perfil.
-                </p>
-
-
-                <p>
-                    <span>»</span>
-                    ver más novedades >>
-                </p>
-
-            </div>
-
-
-        </aside>
+        <p>
+            Guardá todas tus prendas
+            y organizalas como más
+            te guste.
+        </p>
+
+        <span class="more">
+            »»
+        </span>
 
     </div>
 
 
-    <!-- =========================
-         FOOTER
-    ========================== -->
+    <div class="feature">
 
-    <footer>
+        <h3>
+            outfits
+        </h3>
 
-        <div>
-
-            <a href="#">inicio</a> |
-
-            <a href="#">mi armario</a> |
-
-            <a href="#">outfits</a> |
-
-            <a href="#">colores</a> |
-
-            <a href="#">comunidad</a> |
-
-            <a href="#">mi perfil</a> |
-
-            <a href="#">ayuda</a> |
-
-            <a href="#">contacto</a>
-
+        <div class="icon">
+            👗
         </div>
 
+        <p>
+            Obtené ideas de outfits
+            con la ropa que ya tenés
+            en tu armario.
+        </p>
 
-        <div class="copyright">
+        <span class="more">
+            »»
+        </span>
 
-            © 2000-2005 THE CLOTHES CLUB
-            - todos los derechos reservados
+    </div>
 
+
+    <div class="feature">
+
+        <h3>
+            colores
+        </h3>
+
+        <div class="icon">
+            🎨
         </div>
 
-    </footer>
+        <p>
+            Descubrí gamas de colores
+            que combinan con vos
+            y tu estilo.
+        </p>
 
+        <span class="more">
+            »»
+        </span>
+
+    </div>
+
+
+    <div class="feature">
+
+        <h3>
+            comunidad
+        </h3>
+
+        <div class="icon">
+            💬
+        </div>
+
+        <p>
+            Chateá, compartí tus looks
+            y hacé amigos con tus
+            mismos gustos.
+        </p>
+
+        <span class="more">
+            »»
+        </span>
+
+    </div>
+
+
+    <div class="feature">
+
+        <h3>
+            perfil
+        </h3>
+
+        <div class="icon">
+            ⭐
+        </div>
+
+        <p>
+            Personalizá tu perfil
+            y mostrá al mundo
+            tu estilo único.
+        </p>
+
+        <span class="more">
+            »»
+        </span>
+
+    </div>
+
+
+</section>
+```
+
+</main>
+
+<aside>
+
+```
+<div class="panel">
+
+    <div class="panel-title">
+        ♥ INICIAR SESIÓN ♥
+    </div>
+
+    <form id="formularioUsuario">
+
+
+        <label>
+            ID de usuario:
+        </label>
+
+        <input
+            type="text"
+            name="id_usuario"
+            inputmode="numeric"
+            pattern="[0-9]{4}"
+            minlength="4"
+            maxlength="4"
+            placeholder="Ej: 1234"
+            required
+        >
+
+
+        <label>
+            usuario:
+        </label>
+
+        <input
+            type="text"
+            name="nombre_usuario"
+            required
+        >
+
+
+        <label>
+            contraseña:
+        </label>
+
+        <input
+            type="password"
+            name="contraseña"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="login-button"
+        >
+            entrar
+        </button>
+
+    </form>
+
+
+    <div id="mensaje" class="mensaje"></div>
+
+
+    <div class="login-links">
+
+        <a href="#">
+            ¿olvidaste tu contraseña?
+        </a>
+
+        <br><br>
+
+        <a href="#">
+            [ registrate aquí ]
+        </a>
+
+    </div>
 
 </div>
+
+
+<div class="panel news">
+
+    <div class="panel-title">
+        ★ NOVEDADES ★
+    </div>
+
+
+    <p>
+        <span>★</span>
+        nuevo en THE CLOTHES CLUB:
+        ahora podés guardar tus outfits favoritos.
+    </p>
+
+
+    <p>
+        <span>★</span>
+        sumate a los grupos de la comunidad.
+    </p>
+
+
+    <p>
+        <span>★</span>
+        pronto: más opciones para personalizar tu perfil.
+    </p>
+
+
+    <p>
+        <span>»</span>
+        ver más novedades >>
+    </p>
+
+</div>
+```
+
+</aside>
+
+</div>
+
+<footer>
+
+```
+<div>
+
+    <a href="#">inicio</a> |
+
+    <a href="#">mi armario</a> |
+
+    <a href="#">outfits</a> |
+
+    <a href="#">colores</a> |
+
+    <a href="#">comunidad</a> |
+
+    <a href="#">mi perfil</a> |
+
+    <a href="#">ayuda</a> |
+
+    <a href="#">contacto</a>
+
+</div>
+
+
+<div class="copyright">
+
+    © 2000-2005 THE CLOTHES CLUB
+    - todos los derechos reservados
+
+</div>
+```
+
+</footer>
+
+</div>
+
+<script>
+
+document.getElementById("formularioUsuario").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let formulario = this;
+
+    let datos = new FormData(formulario);
+
+    fetch("guardar_usuario.php", {
+        method: "POST",
+        body: datos
+    })
+
+    .then(respuesta => respuesta.text())
+
+    .then(resultado => {
+
+        let mensaje = document.getElementById("mensaje");
+
+        mensaje.innerHTML =
+            resultado +
+            '<br><button onclick="cerrarMensaje()">cerrar</button>';
+
+        mensaje.classList.add("exito");
+
+        formulario.reset();
+
+    })
+
+    .catch(error => {
+
+        let mensaje = document.getElementById("mensaje");
+
+        mensaje.innerHTML =
+            "Ocurrió un error al guardar el usuario." +
+            '<br><button onclick="cerrarMensaje()">cerrar</button>';
+
+        mensaje.classList.add("exito");
+
+    });
+
+});
+
+
+function cerrarMensaje() {
+
+    document.getElementById("mensaje").classList.remove("exito");
+
+}
+
+</script>
 
 </body>
 
