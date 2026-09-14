@@ -11,6 +11,18 @@
 <title>THE CLOTHES CLUB - tu armario, tu estilo, tu mundo</title>
 
 <style>
+.imagen-fondo-fijada {
+        position: fixed;  
+        top: 0;
+        left: 0;
+        width: 100vw;      
+        height: 100vh;        
+        object-fit: cover; 
+        
+        object-position: center;
+        z-index: -1;       
+        pointer-events: none; 
+}
 
 /* =========================
    CONFIGURACIÓN GENERAL
@@ -22,25 +34,14 @@
 
 body {
     margin: 0;
-
-    background-color: #411E57;
-
-    background-image:
-        linear-gradient(
-            rgba(65, 30, 87, 0.70),
-            rgba(135, 45, 114, 0.70)
-        ),
-        url("tela.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
+    background-repeat: repeat;
+    background-position: center top;
     background-attachment: fixed;
-
     color: white;
-
     font-family: "Trebuchet MS", Arial, sans-serif;
 }
+
 
 
 /* =========================
@@ -53,14 +54,8 @@ body {
 
     margin: 20px auto;
 
-    border: 3px solid #EDABBE;
-
-    background-color: rgba(65, 30, 87, 0.90);
-
-    box-shadow:
-        0 0 20px rgba(65, 30, 87, 0.50);
+    border: 3px solid #8F4D75;
 }
-
 
 /* =========================
    ENCABEZADO
@@ -77,10 +72,11 @@ header {
 
     overflow: hidden;
 
-    background-color: rgba(135, 45, 114, 0.75);
+    background-color:#BD5579;
 
-    border-bottom: 2px solid #EDABBE;
+    border-bottom: 2px solid #9C5480;
 }
+
 
 header:before,
 header:after {
@@ -88,7 +84,7 @@ header:after {
 
     position: absolute;
 
-    color: #EDABBE;
+    color: #FFFFFf;
 
     font-size: 45px;
 }
@@ -111,10 +107,7 @@ header:after {
 
     letter-spacing: 3px;
 
-    color: #EDABBE;
-
-    text-shadow:
-        2px 2px 0 #411E57;
+   color: #FFFFFF;
 }
 
 
@@ -125,14 +118,6 @@ header:after {
 
     color: #EDABBE;
 }
-
-
-.sparkle {
-    color: #EDABBE;
-
-    margin-top: 10px;
-}
-
 
 /* =========================
    CUERPO
@@ -155,13 +140,11 @@ header:after {
 /* =========================
    PANELES
 ========================= */
-
 .panel {
     border: 2px solid #EDABBE;
 
     background-color:
-        rgba(124, 78, 187, 0.75);
-
+      #D46A8F;
     padding: 12px;
 }
 
