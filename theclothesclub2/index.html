@@ -98,18 +98,33 @@ header:after {
     right: 30px;
     top: 80px;
 }
-
-
 .logo {
+    font-family:script;
     font-size: 55px;
-
     font-weight: bold;
-
     letter-spacing: 3px;
+    color: #FFFFFF;
 
-   color: #FFFFFF;
+    position: relative;
+    display: inline-block;
+animation: brilloTexto 2s infinite alternate ease-in-out;
 }
 
+@keyframes brilloTexto {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px #FFFFFF,
+            0 0 10px #EDABBE,
+            0 0 20px #DE5C8F;
+    }
+    50% {
+        text-shadow: 
+            0 0 15px #FFFFFF,
+            0 0 25px #EDABBE,
+            0 0 40px #DE5C8F,
+            0 0 50px #FFFFFF;
+    }
+}
 
 .subtitle {
     font-size: 20px;
