@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mi armario</title>
+<style>
+.imagen-fondo-fijada {
+        position: fixed;  
+        top: 0;
+        left: 0;
+        width: 100vw;      
+        height: 100vh;        
+        object-fit: cover; 
+        
+        object-position: center;
+        z-index: -1;       
+        pointer-events: none;
+}
+.titulo {
+font-family:script;
+    font-size: 55px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color:rgb(83,51,37);
+
+    position: relative;
+    display: inline-block;
+animation: brilloTexto 2s infinite alternate ease-in-out;
+}
+@keyframes brilloTexto {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px #FFFFFF,
+            0 0 10px #EDABBE,
+            0 0 20px #DE5C8F;
+    }
+    50% {
+        text-shadow: 
+            0 0 15px #FFFFFF,
+            0 0 25px #EDABBE,
+            0 0 40px #DE5C8F,
+            0 0 50px #FFFFFF;
+    }
+}
+
+</style>
+</head>
+<body>
+<img src="fondo2.jpg" class="imagen-fondo-fijada">
+<div class="titulo">
+    MI ARMARIO
+</div>
+</body>
+</html>
