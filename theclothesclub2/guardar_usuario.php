@@ -19,7 +19,15 @@ if (mysqli_query($conexion, $sql)) {
 
 } else {
 
-    echo "Error al guardar el usuario: " . mysqli_error($conexion);
+    if (mysqli_errno($conexion) == 1062) {
+
+        echo "♥ ID no disponible ♥<br>Ese ID de usuario ya está registrado. Elija otro.";
+
+    } else {
+
+        echo "Error al guardar el usuario: " . mysqli_error($conexion);
+
+    }
 
 }
 
