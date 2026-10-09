@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi armario | THE CLOTHES CLUB</title>
+<style>
+/* =========================
+   CONFIGURACIÓN Y FONDO
+========================= */
+:root {
+  --fondo: #f8e8ed;
+  --morado: #411E57;
+  --rosa: #D46A8F;
+  --rosa-claro: #EDABBE;
+  --rosa-medio: #BD5579;
+  --malva: #8F4D75;
+  --malva2: #9C5480;
+  --lila: #AF719D;
+  --purpura-oscuro: #87527B;
+  --rosa-brillante: #DE5C8F;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: #241222;
+  color: white;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+.imagen-fondo-fijada {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.page {
+  width: 1100px;
+  max-width: 96%;
+  margin: 20px auto;
+  border: 3px solid var(--malva);
+  background-color: rgba(36, 18, 34, 0.85);
+}
+
+/* =========================
+   ENCABEZADO
+========================= */
+header {
+  min-height: 160px;
+  position: relative;
+  text-align: center;
+  padding: 25px 20px 15px;
+  overflow: hidden;
+  background-color: var(--rosa-medio);
+  border-bottom: 2px solid var(--malva2);
+}
+
+header:before, header:after {
+  content: "✦";
+  position: absolute;
+  color: #FFFFFF;
+  font-size: 45px;
+}
+
+header:before { left: 25px; top: 35px; }
+header:after { right: 30px; top: 80px; }
+
+.logo {
+  font-family: "Georgia", cursive, serif;
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  position: relative;
+  display: inline-block;
+  animation: brilloTexto 2s infinite alternate ease-in-out;
+}
+
+@keyframes brilloTexto {
+  0%, 100% { text-shadow: 0 0 5px #FFFFFF, 0 0 10px var(--rosa-claro), 0 0 20px var(--rosa-brillante); }
+  50% { text-shadow: 0 0 15px #FFFFFF, 0 0 25px var(--rosa-claro), 0 0 40px var(--rosa-brillante), 0 0 50px #FFFFFF; }
+}
+
+.subtitle {
+  font-size: 18px;
+  font-style: italic;
+  color: var(--rosa-claro);
+  margin-top: 5px;
+}
+
+.sparkle {
+  color: var(--rosa-claro);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* =========================
+   ESTRUCTURA DE 3 COLUMNAS
+========================= */
+.content {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 220px;
+  gap: 12px;
+  padding: 15px;
+}
+
+/* =========================
+   PANELES LATERALES
+========================= */
+.panel {
+  border: 2px solid var(--rosa-claro);
+  background-color: var(--rosa);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.panel-title {
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background-color: var(--lila);
+  padding: 12px;
+}
+
+.menu-button {
+  display: block;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #FFFFFF;
+  background-color: var(--purpura-oscuro);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.menu-button:hover, .menu-button.active {
+  background-color: var(--rosa-brillante);
+  transform: translateX(3px);
+}
+
+.quote {
+  text-align: center;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--rosa-claro);
+}
+
+.news p { font-size: 12px; line-height: 1.4; color: #fff; }
+.news span { color: var(--rosa-claro); }
+
+/* =========================
+   SECCIÓN DE MI ARMARIO (MAIN)
+========================= */
+main {
+  background-color: var(--purpura-oscuro);
+  border: 2px solid #FFFFFF;
+  padding: 20px 15px;
+}
+
+.page-heading {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.page-heading h1 {
+  font: bold clamp(22px, 3vw, 32px) Georgia, serif;
+  margin: 0 0 6px;
+  color: var(--rosa-claro);
+  text-shadow: 2px 2px 0px var(--morado);
+}
+
+.page-heading p {
+  margin: 0;
+  color: #f1d3e1;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Escenario interactivo del armario */
+.scene {
+  position: relative;
+  max-width: 100%;
+  margin: 15px auto 0;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.wardrobe {
+  position: relative;
+  width: min(100%, 520px);
+  height: 400px;
+  perspective: 1200px;
+  filter: drop-shadow(0 10px 8px rgba(0,0,0,0.5));
+}
+
+.cabinet-back {
+  position: absolute;
+  inset: 10px 5% 12px;
+  background: linear-gradient(180deg,#343b1d 0%,#242a16 45%,#171b10 100%);
+  border: 10px solid #777d35;
+  box-shadow: inset 0 0 0 4px #b4b95b, inset 0 0 0 10px #343b1d, 0 0 0 4px #352039;
+  image-rendering: pixelated;
+}
+
+.top-trim {
+  position: absolute; left: 2%; right: 2%; top: 0; height: 24px;
+  background: repeating-linear-gradient(90deg,#7d8338 0 20px,#b6bc59 20px 40px,#e3d56b 40px 46px);
+  border: 4px solid #352039; z-index: 5;
+}
+
+.bottom-trim {
+  position: absolute; left: 2%; right: 2%; bottom: 0; height: 22px;
+  background: #777d35; border: 4px solid #352039;
+  box-shadow: inset 0 0 0 3px #b6bc59; z-index: 5;
+}
+
+.shelf {
+  position: absolute; left: 8%; right: 8%; height: 10px;
+  background: #252918; border: 2px solid #16170f; z-index: 2;
+}
+.shelf.one { top: 32%; } .shelf.two { top: 65%; }
+
+.rail {
+  position: absolute; left: 18%; right: 18%; top: 20%; height: 7px;
+  background: #5a392f; border: 2px solid #16170f;
+}
+
+.clothes-hanger {
+  position: absolute; top: 15%; left: 22%; width: 56%; height: 22%;
+  border-top: 4px solid #d6c4a5; border-radius: 50% 50% 0 0; opacity: .7;
+}
+
+.items-inside {
+  position: absolute; inset: 18% 8% 8%;
+  display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr;
+  gap: 10px; align-items: center; justify-items: center; padding: 12px; z-index: 3;
+}
+
+.item-wrap {
+  height: 100%; width: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0;
+}
+
+.mini-item {
+  width: 85%; height: 85%; min-height: 70px; max-height: 110px;
+  border: 3px solid var(--morado); box-shadow: 3px 3px 0 #1b0a24;
+  background: var(--rosa-claro); display: flex; align-items: center; justify-content: center;
+  overflow: hidden; cursor: pointer; transition: transform .15s;
+}
+
+.mini-item:hover { transform: translateY(-3px) rotate(-1deg); }
+.mini-item img { width: 100%; height: 100%; object-fit: cover; }
+
+.mini-item .swatch {
+  width: 100%; height: 100%; border: 2px solid #fff8fa;
+  display: grid; place-items: center; font-size: 22px; color: var(--morado);
+}
+
+.mini-item.add { background: #fff8fa; border-color: #111; box-shadow: 3px 3px 0 #111; }
+.mini-item.add .plus { font-size: 38px; line-height: 1; font-weight: bold; color: #111; }
+
+.item-label {
+  font-size: 11px; text-align: center; margin-top: 4px; color: #fff8fa;
+  text-shadow: 1px 1px #411e57, -1px -1px #411e57; max-width: 100%; overflow-wrap: anywhere;
+}
+
+.door {
+  position: absolute; top: 0; bottom: 0; width: 51%; z-index: 8;
+  background: linear-gradient(90deg,transparent 0 12%,#a36e57 12% 17%,transparent 17% 83%,#4a2925 83% 90%,transparent 90%),
+              linear-gradient(180deg,#6b3d35 0 8%,#9a6653 8% 13%,#5b302b 13% 86%,#38201e 86% 100%);
+  border: 8px solid #352039; box-shadow: inset 0 0 0 4px #c58b70, inset 0 0 0 10px #70463c;
+  transform-style: preserve-3d; transition: transform 1.45s cubic-bezier(.2,.72,.25,1);
+}
+
+.door.left { left: 0; transform-origin: left center; }
+.door.right { right: 0; transform-origin: right center; }
+
+.door:before {
+  content: ""; position: absolute; inset: 12px;
+  background: repeating-linear-gradient(180deg,#71443a 0 24px,#4c2926 24px 30px,#8d5a4b 30px 36px);
+  border: 4px solid #38201e; box-shadow: inset 0 0 0 4px #9a6653;
+}
+
+.door:after {
+  content: ""; position: absolute; top: 48%; width: 13px; height: 13px;
+  border: 3px solid #4b351b; background: #d9ce50;
+}
+.door.left:after { right: 10px; } .door.right:after { left: 10px; }
+
+.scene.opened .door.left { transform: rotateY(-68deg); }
+.scene.opened .door.right { transform: rotateY(68deg); }
+.scene.opened .door { pointer-events: none; }
+
+.open-hint {
+  position: absolute; z-index: 10; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 8px 14px; background: #fff8fa; border: 2px solid var(--morado);
+  color: var(--morado); box-shadow: 3px 3px 0 var(--morado); font-size: 12px;
+  font-weight: bold; white-space: nowrap; transition: opacity .3s;
+}
+.scene.opened .open-hint { opacity: 0; pointer-events: none; }
+
+.controls {
+  margin: 15px auto 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+}
+
+.btn {
+  border: 2px solid var(--morado); background: var(--rosa-brillante); color: white;
+  padding: 10px 16px; font-weight: bold; cursor: pointer; box-shadow: 3px 3px 0 var(--morado);
+  font-size: 13px; font-family: "Trebuchet MS", sans-serif;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.btn:hover { background: var(--malva); transform: translate(-1px, -1px); }
+.btn.secondary { background: #fff8fa; color: var(--morado); }
+
+.helper { text-align: center; font-size: 12px; color: var(--rosa-claro); margin-top: 15px; }
+
+/* =========================
+   MODALES Y FLOTANTES
+========================= */
+.overlay {
+  position: fixed; inset: 0; background: rgba(36, 18, 34, 0.85);
+  display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000;
+}
+.overlay.show { display: flex; }
+
+.modal {
+  width: min(100%, 580px); max-height: 90vh; overflow: auto;
+  background: #fff8fa; border: 4px solid var(--morado); color: var(--morado);
+  box-shadow: 8px 8px 0 #110515; padding: 20px;
+}
+
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid var(--rosa-claro); padding-bottom: 10px; margin-bottom: 15px;
+}
+.modal h2 { font: bold 22px Georgia, serif; margin: 0; color: var(--morado); }
+.close { border: 0; background: transparent; color: var(--morado); font-size: 26px; cursor: pointer; font-weight: bold; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field.full { grid-column: 1 / -1; }
+
+label { font-size: 12px; font-weight: bold; color: var(--morado); }
+
+input, select, textarea {
+  width: 100%; padding: 8px; border: 2px solid var(--rosa-medio);
+  background: white; color: var(--morado); font: 12px "Trebuchet MS", sans-serif; border-radius: 0;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--lila); }
+textarea { min-height: 70px; resize: vertical; }
+
+.note { font-size: 11px; line-height: 1.4; color: var(--malva); margin: 2px 0 0; }
+
+.photo-preview {
+  width: 100%; height: 100px; border: 2px dashed var(--rosa-medio); background: #fcecf1;
+  display: grid; place-items: center; overflow: hidden; color: var(--malva); font-size: 12px;
+}
+.photo-preview img { width: 100%; height: 100%; object-fit: contain; }
+
+.tag-entry { display: flex; gap: 6px; }
+.tag-entry input { flex: 1; min-width: 0; }
+.tag-entry button {
+  border: 2px solid var(--morado); background: var(--rosa-claro); color: var(--morado);
+  font-weight: bold; padding: 0 12px; cursor: pointer;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 24px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 6px; background: #f3d2df;
+  border: 1px solid var(--rosa-medio); padding: 4px 8px; font-size: 11px; color: var(--morado);
+}
+.tag button { border: 0; background: transparent; color: var(--morado); font-weight: bold; cursor: pointer; padding: 0; }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+.empty { font-size: 11px; color: var(--malva); }
+
+.details {
+  position: fixed; right: 20px; bottom: 20px; z-index: 900; background: #fff8fa;
+  border: 3px solid var(--morado); color: var(--morado); box-shadow: 5px 5px 0 var(--morado);
+  padding: 15px; width: min(300px, calc(100% - 40px)); display: none;
+}
+.details.show { display: block; }
+.details h3 { margin: 0 0 6px; font: bold 18px Georgia, serif; }
+.details p { font-size: 12px; line-height: 1.4; margin: 6px 0; }
+
+/* =========================
+   PIE DE PÁGINA
+========================= */
+footer {
+  text-align: center; padding: 18px; border-top: 2px solid var(--rosa-claro);
+  background-color: var(--lila); color: var(--rosa-claro); font-size: 12px;
+}
+footer a { color: var(--rosa-claro); text-decoration: none; margin: 0 6px; }
+footer a:hover { color: white; }
+.copyright { margin-top: 10px; font-size: 11px; }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .content { grid-template-columns: 1fr; }
+  .logo { font-size: 38px; }
+}
+@media (max-width: 500px) {
+  .page { max-width: 100%; margin: 0; border: none; }
+  .logo { font-size: 28px; letter-spacing: 1px; }
+  .subtitle { font-size: 15px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+}
+</style>
+</head>
+
+<body>
+
+<img src="fondo.jpg" class="imagen-fondo-fijada" alt="Fondo">
+
+<div class="page">
+
+  <!-- ENCABEZADO -->
+  <header>
+    <div class="logo">THE CLOTHES CLUB</div>
+    <div class="subtitle">tu armario, tu estilo, tu mundo</div>
+    <div class="sparkle">✦ ✧ ★ ✦ ✧</div>
+  </header>
+
+  <div class="content">
+
+    <!-- COLUMNA IZQUIERDA: MENÚ Y FRASE -->
+    <aside>
+      <div class="panel">
+        <div class="panel-title">★ MENÚ PRINCIPAL ★</div>
+        <nav class="menu">
+          <a href="index.html" class="menu-button">⌂ inicio</a>
+          <a href="mi_armario.html" class="menu-button active">♕ mi armario</a>
+          <a href="#" class="menu-button">♧ outfits</a>
+          <a href="#" class="menu-button">◉ colores</a>
+          <a href="#" class="menu-button">♟ comunidad</a>
+          <a href="#" class="menu-button">★ mi perfil</a>
+          <a href="#" class="menu-button">? ayuda</a>
+        </nav>
+      </div>
+
+      <div class="panel quote">
+        <div class="panel-title">★ FRASE DEL DÍA ★</div>
+        <p>"La moda pasa,<br>el estilo queda."</p>
+        <div class="sparkle">♥ ✦ ♥</div>
+      </div>
+    </aside>
+
+    <!-- COLUMNA CENTRAL: ARMARIO INTERACTIVO -->
+    <main>
+      <section class="page-heading">
+        <h1>♕ Mi Armario</h1>
+        <p>Un lugar para guardar tus prendas, describirlas y etiquetarlas a tu manera.</p>
+      </section>
+
+      <section class="scene" id="scene" aria-label="Armario ilustrado">
+        <div class="wardrobe">
+          <div class="cabinet-back"></div>
+          <div class="top-trim"></div>
+          <div class="bottom-trim"></div>
+          <div class="rail"></div>
+          <div class="clothes-hanger"></div>
+          <div class="shelf one"></div>
+          <div class="shelf two"></div>
+          <div class="items-inside" id="itemsInside"></div>
+          <div class="door left"></div>
+          <div class="door right"></div>
+        </div>
+        <div class="open-hint">Tu armario está abriéndose…</div>
+      </section>
+
+      <div class="controls">
+        <button class="btn" id="addBtn">＋ Agregar prenda</button>
+        <button class="btn secondary" id="toggleBtn">Cerrar armario</button>
+      </div>
+
+      <p class="helper">La foto es ilustrativa: lo que ayuda a encontrar tus prendas son sus descripciones y etiquetas.</p>
+    </main>
+
+    <!-- COLUMNA DERECHA: NOVEDADES Y ESTADO -->
+    <aside>
+      <div class="panel news">
+        <div class="panel-title">★ NOVEDADES ★</div>
+        <p><span>★</span> nuevo en THE CLOTHES CLUB: ahora podés guardar tus outfits favoritos.</p>
+        <p><span>★</span> sumate a los grupos de la comunidad.</p>
+        <p><span>★</span> pronto: más opciones para personalizar tu perfil.</p>
+        <p><span>»</span> ver más novedades >></p>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <div>
+      <a href="#">inicio</a> |
+      <a href="#">mi armario</a> |
+      <a href="#">outfits</a> |
+      <a href="#">colores</a> |
+      <a href="#">comunidad</a> |
+      <a href="#">mi perfil</a> |
+      <a href="#">ayuda</a> |
+      <a href="#">contacto</a>
+    </div>
+    <div class="copyright">
+      © 2000-2005 THE CLOTHES CLUB - todos los derechos reservados
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL PARA AGREGAR PRENDA -->
+<div class="overlay" id="overlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h2 id="modalTitle">＋ Agregar prenda</h2>
+      <button class="close" id="closeModal" aria-label="Cerrar">×</button>
+    </div>
+    <form id="garmentForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="name">Nombre de la prenda *</label>
+          <input id="name" required maxlength="70" placeholder="Ej.: Remera negra oversize">
+        </div>
+        <div class="field">
+          <label for="type">Tipo de prenda *</label>
+          <select id="type" required>
+            <option value="">Elegí una opción</option>
+            <option>Remera</option><option>Top</option><option>Pantalón</option>
+            <option>Jean</option><option>Falda</option><option>Vestido</option>
+            <option>Buzo</option><option>Campera</option><option>Abrigo</option>
+            <option>Calzado</option><option>Accesorio</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="color">Color principal</label>
+          <input id="color" placeholder="Ej.: negro, bordó">
+        </div>
+        <div class="field full">
+          <label for="description">Descripción (lo más importante) *</label>
+          <textarea id="description" required placeholder="Contá cómo es: corte, tela, estampado, calce, detalles…"></textarea>
+          <p class="note">Escribí los detalles que te servirían para reconocerla o combinarla.</p>
+        </div>
+        <div class="field">
+          <label for="season">Temporada</label>
+          <select id="season">
+            <option value="">Sin especificar</option>
+            <option>Primavera</option><option>Verano</option>
+            <option>Otoño</option><option>Invierno</option>
+            <option>Todas las temporadas</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="style">Estilo (opcional)</label>
+          <select id="style">
+            <option value="">Sin especificar</option>
+            <option>Casual</option><option>Formal</option>
+            <option>Deportivo</option><option>Elegante</option>
+            <option>Y2K</option><option>Vintage</option>
+            <option>Alternativo</option><option>Gótico</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="photo">Foto ilustrativa (opcional)</label>
+          <input id="photo" type="file" accept="image/*">
+          <div class="photo-preview" id="photoPreview">La foto aparecerá acá</div>
+        </div>
+        <div class="field full">
+          <label for="tagInput">Etiquetas personalizadas</label>
+          <div class="tag-entry">
+            <input id="tagInput" placeholder="Ej.: oversize, algodón, manga corta">
+            <button type="button" id="addTag">Agregar</button>
+          </div>
+          <div class="tags" id="tags"></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn secondary" type="button" id="cancelBtn">Cancelar</button>
+        <button class="btn" type="submit">Guardar prenda</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- DETALLES DE PRENDA FLOTANTE -->
+<aside class="details" id="details"></aside>
+
+<script>
+const scene = document.getElementById('scene');
+const inside = document.getElementById('itemsInside');
+const overlay = document.getElementById('overlay');
+const form = document.getElementById('garmentForm');
+const tagsBox = document.getElementById('tags');
+const tagInput = document.getElementById('tagInput');
+const photoInput = document.getElementById('photo');
+const photoPreview = document.getElementById('photoPreview');
+let tags = [];
+let photoData = '';
+let garments = [];
+
+function openWardrobe(){ setTimeout(() => scene.classList.add('opened'), 250); }
+
+function render(){
+  inside.innerHTML = '';
+  const addWrap = document.createElement('div'); addWrap.className = 'item-wrap';
+  const add = document.createElement('button'); add.className = 'mini-item add'; add.type = 'button';
+  add.setAttribute('aria-label', 'Agregar prenda');
+  add.innerHTML = '<span class="plus">＋</span>';
+  add.addEventListener('click', showModal);
+  
+  const addLabel = document.createElement('div'); addLabel.className = 'item-label'; addLabel.textContent = 'agregar prenda';
+  addWrap.append(add, addLabel); inside.append(addWrap);
+
+  garments.forEach((g, i) => {
+    const wrap = document.createElement('div'); wrap.className = 'item-wrap';
+    const tile = document.createElement('button'); tile.className = 'mini-item'; tile.type = 'button';
+    tile.setAttribute('aria-label', g.name);
+    
+    if(g.photo){
+      const img = document.createElement('img'); img.src = g.photo; img.alt = 'Foto de '+g.name; tile.append(img);
+    } else {
+      const sw = document.createElement('div'); sw.className = 'swatch';
+      sw.style.background = g.swatch || colorFor(g.color); tile.append(sw);
+    }
+    
+    tile.addEventListener('click', () => showDetails(g, i));
+    const label = document.createElement('div'); label.className = 'item-label'; label.textContent = g.name;
+    wrap.append(tile, label); inside.append(wrap);
+  });
+}
+
+function colorFor(c){
+  const map = {
+    rosa: '#f6a9c7', naranja: '#ff812b', celeste: '#05a8df', negro: '#333333',
+    blanco: '#ffffff', rojo: '#df334d', azul: '#177bc1', verde: '#6d9d63',
+    violeta: '#8f55a2', amarillo: '#f2d34f', bordó: '#7c243b', marrón: '#9a6547'
+  };
+  return map[(c || '').toLowerCase()] || '#edabbe';
+}
+
+function showModal(){
+  tags = []; photoData = ''; form.reset();
+  photoPreview.textContent = 'La foto aparecerá acá';
+  renderTags(); overlay.classList.add('show');
+  document.getElementById('name').focus();
+}
+
+function hideModal(){ overlay.classList.remove('show'); }
+
+function renderTags(){
+  tagsBox.innerHTML = '';
+  if(!tags.length){
+    const e = document.createElement('span'); e.className = 'empty';
+    e.textContent = 'Todavía no agregaste etiquetas.'; tagsBox.append(e); return;
+  }
+  tags.forEach((t, i) => {
+    const chip = document.createElement('span'); chip.className = 'tag';
+    chip.append(document.createTextNode(t));
+    const x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+    x.onclick = () => { tags.splice(i, 1); renderTags(); };
+    chip.append(x); tagsBox.append(chip);
+  });
+}
+
+function addTag(){
+  const val = tagInput.value.trim().replace(/\s+/g, ' ');
+  if(val && !tags.some(t => t.toLowerCase() === val.toLowerCase())) tags.push(val);
+  tagInput.value = ''; renderTags(); tagInput.focus();
+}
+
+function showDetails(g, i){
+  const d = document.getElementById('details'); d.innerHTML = '';
+  const h = document.createElement('h3'); h.textContent = g.name; d.append(h);
+  const p = document.createElement('p'); p.textContent = g.description; d.append(p);
+  const meta = document.createElement('p'); meta.style.fontWeight = 'bold';
+  meta.textContent = [g.type, g.color, g.season, g.style].filter(Boolean).join(' · '); d.append(meta);
+  
+  (g.tags || []).forEach(t => {
+    const span = document.createElement('span'); span.className = 'tag'; span.textContent = t; d.append(span);
+  });
+  
+  const close = document.createElement('button'); close.className = 'btn secondary';
+  close.style.marginTop = '10px'; close.style.width = '100%'; close.textContent = 'Cerrar';
+  close.onclick = () => d.classList.remove('show'); d.append(close); d.classList.add('show');
+}
+
+document.getElementById('addBtn').onclick = showModal;
+document.getElementById('closeModal').onclick = hideModal;
+document.getElementById('cancelBtn').onclick = hideModal;
+document.getElementById('addTag').onclick = addTag;
+
+tagInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); addTag(); }
+});
+
+photoInput.addEventListener('change', () => {
+  const file = photoInput.files[0];
+  if(!file){ photoData = ''; photoPreview.textContent = 'La foto aparecerá acá'; return; }
+  if(!file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    photoData = reader.result;
+    photoPreview.innerHTML = '';
+    const img = document.createElement('img'); img.src = photoData; img.alt = 'Vista previa';
+    photoPreview.append(img);
+  };
+  reader.readAsDataURL(file);
+});
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const type = document.getElementById('type').value;
+  const color = document.getElementById('color').value.trim();
+  const description = document.getElementById('description').value.trim();
+  if(!name || !type || !description) return;
+  
+  garments.push({
+    name, type, color, description,
+    season: document.getElementById('season').value,
+    style: document.getElementById('style').value,
+    tags: [...tags], photo: photoData, swatch: colorFor(color)
+  });
+  
+  render(); hideModal(); scene.classList.add('opened');
+});
+
+document.getElementById('toggleBtn').onclick = () => {
+  scene.classList.toggle('opened');
+  document.getElementById('toggleBtn').textContent = scene.classList.contains('opened') ? 'Cerrar armario' : 'Abrir armario';
+};
+
+overlay.addEventListener('click', e => { if(e.target === overlay) hideModal(); });
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ hideModal(); document.getElementById('details').classList.remove('show'); }
+});
+
+render();
+openWardrobe();
+</script>
+</body>
+</html>
