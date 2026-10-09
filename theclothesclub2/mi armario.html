@@ -1,61 +1,103 @@
-
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi armario</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<meta charset="UTF-8">
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: white;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
 
-<title>Mi armario</title>
-<style>
-.imagen-fondo-fijada {
-        position: fixed;  
-        top: 0;
-        left: 0;
-        width: 100vw;      
-        height: 100vh;        
-        object-fit: cover; 
-        
-        object-position: center;
-        z-index: -1;       
-        pointer-events: none;
-}
-.titulo {
-font-family:script;
-    font-size: 55px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    color:rgb(83,51,37);
+        /* Imagen de fondo fijada a pantalla completa */
+        .imagen-fondo-fijada {
+            position: fixed;  
+            top: 0;
+            left: 0;
+            width: 100vw;      
+            height: 100vh;        
+            object-fit: cover; 
+            object-position: center;
+            z-index: -1;       
+            pointer-events: none; 
+        }
 
-    position: relative;
-    display: inline-block;
-animation: brilloTexto 2s infinite alternate ease-in-out;
-}
-@keyframes brilloTexto {
-    0%, 100% {
-        text-shadow: 
-            0 0 5px #FFFFFF,
-            0 0 10px #EDABBE,
-            0 0 20px #DE5C8F;
-    }
-    50% {
-        text-shadow: 
-            0 0 15px #FFFFFF,
-            0 0 25px #EDABBE,
-            0 0 40px #DE5C8F,
-            0 0 50px #FFFFFF;
-    }
-}
+        /* Contenedor principal al 100% de ancho */
+        .page {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Empuja el footer bien abajo */
+        }
 
-</style>
+        /* Pie de página abarcando todo el ancho horizontal */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 18px;
+            background-color: rgb(41, 19, 5);
+            color: rgb(252, 249, 239);
+            border-top: 2px solid rgb(54, 25, 7);
+        }
+
+        footer a {
+            color: rgb(252, 249, 239);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 12px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-<img src="fondo2.jpg" class="imagen-fondo-fijada">
-<div class="titulo">
-    MI ARMARIO
-</div>
+
+    <img src="fondo2.jpg" class="imagen-fondo-fijada" alt="Fondo">
+
+    <div class="page">
+        <!-- Contenido principal de tu página irá aquí -->
+
+        <footer>
+            <div>
+                <a href="#">inicio</a> |
+                <a href="#">mi armario</a> |
+                <a href="#">outfits</a> |
+                <a href="#">colores</a> |
+                <a href="#">comunidad</a> |
+                <a href="#">mi perfil</a> |
+                <a href="#">ayuda</a> |
+                <a href="#">contacto</a>
+            </div>
+
+            <div class="copyright">
+                © 2000-2005 THE CLOTHES CLUB - todos los derechos reservados
+            </div>
+        </footer>
+    </div>
+
 </body>
 </html>
