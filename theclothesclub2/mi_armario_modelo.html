@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi armario</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: white;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+
+        /* Imagen de fondo fijada a pantalla completa */
+        .imagen-fondo-fijada {
+            position: fixed;  
+            top: 0;
+            left: 0;
+            width: 100vw;      
+            height: 100vh;        
+            object-fit: cover; 
+            object-position: center;
+            z-index: -1;        
+            pointer-events: none; 
+        }
+
+        header {
+            min-height: 180px;
+            position: relative;
+            text-align: center;
+            padding: 30px 20px 20px;
+            overflow: hidden;
+            background-color: #CDEBFC;
+            border-bottom: 2px solid rgb(41, 19, 5);
+        }
+
+        .logo {
+            font-family: serif;
+            font-size: 55px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: rgb(41, 19, 5);
+            position: relative;
+            display: inline-block;
+            text-align: center;
+            animation: brilloTexto 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes brilloTexto {
+            0%, 100% {
+                text-shadow: 0 0 5px #8AAFD4, 0 0 10px #8AAFD4, 0 0 20px #8AAFD4;
+            }
+            50% {
+                text-shadow: 0 0 15px #8AAFD4, 0 0 25px #8AAFD4, 0 0 40px #8AAFD4, 0 0 50px #8AAFD4;
+            }
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-style: italic;
+            color: #EDABBE;
+            margin-top: 5px;
+        }
+
+        .page {
+            width: 100%;
+            margin: 0;
+            padding: 20px;
+            flex: 1;  
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Contenedor 3D del armario */
+        .armario-contenedor {
+            width: 380px;
+            height: 420px;
+            background-color: #343b1d;
+            border: 8px solid rgb(41, 19, 5);
+            position: relative;
+            margin: 0 auto 15px auto;
+            perspective: 1200px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .interior-armario {
+            padding: 15px;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8px;
+            align-items: center;
+            justify-items: center;
+            overflow-y: auto;
+        }
+
+        /* Puertas con comportamiento 3D */
+        .puerta {
+            position: absolute;
+            top: -8px;
+            width: 51%;
+            height: calc(100% + 16px);
+            background-color: #9a6653;
+            border: 8px solid rgb(41, 19, 5);
+            transition: transform 1.2s cubic-bezier(0.2, 0.72, 0.25, 1);
+            z-index: 10;
+            pointer-events: none; /* Permite hacer clic a través de ellas cuando están abiertas */
+        }
+
+        .puerta-izquierda {
+            left: 0;
+            transform-origin: left center;
+        }
+
+        .puerta-derecha {
+            right: 0;
+            transform-origin: right center;
+        }
+
+        /* Estados de apertura */
+        .armario-contenedor.abierto .puerta-izquierda {
+            transform: rotateY(-115deg);
+        }
+
+        .armario-contenedor.abierto .puerta-derecha {
+            transform: rotateY(115deg);
+        }
+
+        /* Elementos de las prendas dentro del armario */
+        .item-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .mini-item {
+            width: 80px;
+            height: 80px;
+            background: #CDEBFC;
+            border: 2px solid rgb(41, 19, 5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow: 2px 2px 0 rgb(41, 19, 5);
+            transition: transform 0.15s;
+        }
+
+        .mini-item:hover { transform: translateY(-3px); }
+        .mini-item img { width: 100%; height: 100%; object-fit: cover; }
+        .mini-item .swatch { width: 100%; height: 100%; display: grid; place-items: center; font-size: 20px; }
+
+        .mini-item.add { background: #FCF9EF; border-color: #111; }
+        .mini-item.add .plus { font-size: 32px; color: #111; font-weight: bold; }
+
+        .item-label {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 3px;
+            color: #fff;
+            text-shadow: 1px 1px #000;
+            max-width: 90px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Controles y Botones */
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            border: 2px solid rgb(41, 19, 5);
+            background: #8AAFD4;
+            color: rgb(41, 19, 5);
+            padding: 10px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 rgb(41, 19, 5);
+            font-size: 13px;
+            font-family: "Trebuchet MS", sans-serif;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn:hover { background: #CDEBFC; transform: translate(-1px, -1px); }
+        .btn.secondary { background: #FCF9EF; }
+
+        .instruccion {
+            font-size: 13px;
+            color: #CDEBFC;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* =========================
+           MODAL Y FORMULARIO (NUEVO)
+        ========================= */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(41, 19, 5, 0.85);
+            display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000;
+        }
+        .overlay.show { display: flex; }
+
+        .modal {
+            width: min(100%, 550px); max-height: 90vh; overflow: auto;
+            background: #FCF9EF; border: 4px solid rgb(41, 19, 5); color: rgb(41, 19, 5);
+            box-shadow: 8px 8px 0 #110515; padding: 20px;
+        }
+
+        .modal-head {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #8AAFD4; padding-bottom: 10px; margin-bottom: 15px;
+        }
+        .modal h2 { font: bold 20px serif; margin: 0; color: rgb(41, 19, 5); }
+        .close { border: 0; background: transparent; color: rgb(41, 19, 5); font-size: 24px; cursor: pointer; font-weight: bold; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .field.full { grid-column: 1 / -1; }
+
+        label { font-size: 12px; font-weight: bold; color: rgb(41, 19, 5); }
+
+        input, select, textarea {
+            width: 100%; padding: 8px; border: 2px solid #8AAFD4;
+            background: white; color: rgb(41, 19, 5); font: 12px "Trebuchet MS", sans-serif;
+        }
+        textarea { min-height: 60px; resize: vertical; }
+
+        .photo-preview {
+            width: 100%; height: 80px; border: 2px dashed #8AAFD4; background: #f0f7ff;
+            display: grid; place-items: center; overflow: hidden; color: #666; font-size: 11px;
+        }
+        .photo-preview img { width: 100%; height: 100%; object-fit: contain; }
+
+        .tag-entry { display: flex; gap: 6px; }
+        .tag-entry input { flex: 1; }
+        .tag-entry button {
+            border: 2px solid rgb(41, 19, 5); background: #CDEBFC; color: rgb(41, 19, 5);
+            font-weight: bold; padding: 0 10px; cursor: pointer;
+        }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; min-height: 20px; }
+        .tag {
+            display: inline-flex; align-items: center; gap: 5px; background: #CDEBFC;
+            border: 1px solid #8AAFD4; padding: 3px 6px; font-size: 10px; color: rgb(41, 19, 5);
+        }
+        .tag button { border: 0; background: transparent; cursor: pointer; font-weight: bold; }
+
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
+        .empty { font-size: 11px; color: #666; }
+
+        /* Panel flotante de detalles */
+        .details {
+            position: fixed; right: 20px; bottom: 20px; z-index: 900; background: #FCF9EF;
+            border: 3px solid rgb(41, 19, 5); color: rgb(41, 19, 5); box-shadow: 5px 5px 0 rgb(41, 19, 5);
+            padding: 15px; width: min(280px, calc(100% - 40px)); display: none;
+        }
+        .details.show { display: block; }
+        .details h3 { margin: 0 0 6px; font: bold 16px serif; }
+        .details p { font-size: 12px; margin: 5px 0; }
+
+        /* Pie de página */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 18px;
+            background-color: rgb(41, 19, 5);
+            color: rgb(252, 249, 239);
+            border-top: 2px solid rgb(54, 25, 7);
+        }
+
+        footer a {
+            color: #CDEBFC;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            color: rgb(150,94,34);
+        }
+
+        .copyright {
+            margin-top: 12px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="fondo2.jpg" class="imagen-fondo-fijada" alt="Fondo">
+    
+    <header>
+        <div class="logo">MI ARMARIO</div>
+        <div class="subtitle">tu armario, tu estilo, tu mundo</div>
+    </header>
+
+    <div class="page">
+        <!-- Armario contenedor interactivo 3D -->
+        <div class="armario-contenedor" id="miArmario">
+            <div class="interior-armario" id="itemsInside">
+                <!-- Se rellena dinámicamente con JavaScript -->
+            </div>
+            <div class="puerta puerta-izquierda"></div>
+            <div class="puerta puerta-derecha"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="addBtn">＋ Agregar prenda</button>
+            <button class="btn secondary" id="toggleBtn">Abrir / Cerrar puertas</button>
+        </div>
+        <div class="instruccion">Gestiona y guarda tus prendas interactivamente</div>
+    </div>
+
+    <footer>
+        <div>
+            <a href="index.html">inicio</a> |
+            <a href="#">mi armario</a> |
+            <a href="#">outfits</a> |
+            <a href="#">colores</a> |
+            <a href="#">comunidad</a> |
+            <a href="#">mi perfil</a> |
+            <a href="#">ayuda</a> |
+            <a href="#">contacto</a>
+        </div>
+
+        <div class="copyright">
+            © 2000-2005 THE CLOTHES CLUB - todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- MODAL PARA AGREGAR PRENDA -->
+    <div class="overlay" id="overlay">
+        <section class="modal" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <h2>＋ Agregar prenda</h2>
+                <button class="close" id="closeModal">×</button>
+            </div>
+            <form id="garmentForm">
+                <div class="form-grid">
+                    <div class="field full">
+                        <label for="name">Nombre de la prenda *</label>
+                        <input id="name" required maxlength="70" placeholder="Ej.: Remera negra oversize">
+                    </div>
+                    <div class="field">
+                        <label for="type">Tipo de prenda *</label>
+                        <select id="type" required>
+                            <option value="">Elegí una opción</option>
+                            <option>Remera</option><option>Top</option><option>Pantalón</option>
+                            <option>Jean</option><option>Falda</option><option>Vestido</option>
+                            <option>Buzo</option><option>Campera</option><option>Abrigo</option>
+                            <option>Calzado</option><option>Accesorio</option><option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="color">Color principal</label>
+                        <input id="color" placeholder="Ej.: negro, bordó">
+                    </div>
+                    <div class="field full">
+                        <label for="description">Descripción *</label>
+                        <textarea id="description" required placeholder="Corte, tela, detalles…"></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="season">Temporada</label>
+                        <select id="season">
+                            <option value="">Sin especificar</option>
+                            <option>Primavera</option><option>Verano</option>
+                            <option>Otoño</option><option>Invierno</option>
+                            <option>Todas las temporadas</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="style">Estilo</label>
+                        <select id="style">
+                            <option value="">Sin especificar</option>
+                            <option>Casual</option><option>Formal</option>
+                            <option>Deportivo</option><option>Y2K</option><option>Vintage</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label for="photo">Foto ilustrativa (opcional)</label>
+                        <input id="photo" type="file" accept="image/*">
+                        <div class="photo-preview" id="photoPreview">La foto aparecerá acá</div>
+                    </div>
+                    <div class="field full">
+                        <label for="tagInput">Etiquetas</label>
+                        <div class="tag-entry">
+                            <input id="tagInput" placeholder="Ej.: algodón, manga corta">
+                            <button type="button" id="addTag">Agregar</button>
+                        </div>
+                        <div class="tags" id="tags"></div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn secondary" type="button" id="cancelBtn">Cancelar</button>
+                    <button class="btn" type="submit">Guardar</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <!-- TARJETA FLOTANTE DE DETALLES -->
+    <aside class="details" id="details"></aside>
+
+    <!-- LÓGICA DE JAVASCRIPT -->
+    <script>
+        const scene = document.getElementById('miArmario');
+        const inside = document.getElementById('itemsInside');
+        const overlay = document.getElementById('overlay');
+        const form = document.getElementById('garmentForm');
+        const tagsBox = document.getElementById('tags');
+        const tagInput = document.getElementById('tagInput');
+        const photoInput = document.getElementById('photo');
+        const photoPreview = document.getElementById('photoPreview');
+        let tags = [];
+        let photoData = '';
+        let garments = [];
+
+        // Función para renderizar el botón de "+" y todas las prendas guardadas dentro del armario
+        function render(){
+            inside.innerHTML = '';
+            
+            // Botón inicial dentro del armario para agregar prenda rápida
+            const addWrap = document.createElement('div'); 
+            addWrap.className = 'item-wrap';
+            const addBtnInside = document.createElement('button'); 
+            addBtnInside.className = 'mini-item add'; 
+            addBtnInside.type = 'button';
+            addBtnInside.innerHTML = '<span class="plus">＋</span>';
+            addBtnInside.addEventListener('click', showModal);
+            
+            const addLabel = document.createElement('div'); 
+            addLabel.className = 'item-label'; 
+            addLabel.textContent = 'agregar';
+            addWrap.append(addBtnInside, addLabel); 
+            inside.append(addWrap);
+
+            // Generar cada prenda que el usuario haya guardado
+            garments.forEach((g, i) => {
+                const wrap = document.createElement('div'); wrap.className = 'item-wrap';
+                const tile = document.createElement('button'); tile.className = 'mini-item'; tile.type = 'button';
+                
+                if(g.photo){
+                    const img = document.createElement('img'); img.src = g.photo; tile.append(img);
+                } else {
+                    const sw = document.createElement('div'); sw.className = 'swatch';
+                    sw.style.background = colorFor(g.color);
+                    sw.textContent = '👕';
+                    tile.append(sw);
+                }
+                
+                tile.addEventListener('click', () => showDetails(g));
+                const label = document.createElement('div'); label.className = 'item-label'; label.textContent = g.name;
+                wrap.append(tile, label); inside.append(wrap);
+            });
+        }
+
+        // Asignación de colores automáticos si no sube foto
+        function colorFor(c){
+            const map = {
+                rosa: '#EDABBE', celeste: '#CDEBFC', negro: '#333333',
+                blanco: '#ffffff', rojo: '#df334d', azul: '#177bc1', verde: '#6d9d63',
+                amarillo: '#f2d34f', marrón: '#9a6547'
+            };
+            return map[(c || '').toLowerCase()] || '#8AAFD4';
+        }
+
+        function showModal(){
+            tags = []; photoData = ''; form.reset();
+            photoPreview.textContent = 'La foto aparecerá acá';
+            renderTags(); overlay.classList.add('show');
+            document.getElementById('name').focus();
+        }
+
+        function hideModal(){ overlay.classList.remove('show'); }
+
+        function renderTags(){
+            tagsBox.innerHTML = '';
+            if(!tags.length){
+                tagsBox.innerHTML = '<span class="empty">Sin etiquetas</span>';
+                return;
+            }
+            tags.forEach((t, i) => {
+                const chip = document.createElement('span'); chip.className = 'tag';
+                chip.append(document.createTextNode(t));
+                const x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+                x.onclick = () => { tags.splice(i, 1); renderTags(); };
+                chip.append(x); tagsBox.append(chip);
+            });
+        }
+
+        function addTag(){
+            const val = tagInput.value.trim();
+            if(val && !tags.includes(val)) tags.push(val);
+            tagInput.value = ''; renderTags(); tagInput.focus();
+        }
+
+        function showDetails(g){
+            const d = document.getElementById('details');
+            d.innerHTML = `
+                <h3>${g.name}</h3>
+                <p><b>Tipo:</b> ${g.type} (${g.color || 'Sin color'})</p>
+                <p>${g.description}</p>
+                <p><b>Temporada:</b> ${g.season || 'N/A'} | <b>Estilo:</b> ${g.style || 'N/A'}</p>
+            `;
+            const close = document.createElement('button'); close.className = 'btn secondary';
+            close.style.marginTop = '8px'; close.style.width = '100%'; close.textContent = 'Cerrar';
+            close.onclick = () => d.classList.remove('show');
+            d.append(close);
+            d.classList.add('show');
+        }
+
+        // Eventos principales
+        document.getElementById('addBtn').onclick = showModal;
+        document.getElementById('closeModal').onclick = hideModal;
+        document.getElementById('cancelBtn').onclick = hideModal;
+        document.getElementById('addTag').onclick = addTag;
+
+        tagInput.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); addTag(); } });
+
+        photoInput.addEventListener('change', () => {
+            const file = photoInput.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                photoData = reader.result;
+                photoPreview.innerHTML = `<img src="${photoData}" alt="Prenda">`;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const type = document.getElementById('type').value;
+            const description = document.getElementById('description').value.trim();
+            if(!name || !type || !description) return;
+
+            garments.push({
+                name, type,
+                color: document.getElementById('color').value.trim(),
+                description,
+                season: document.getElementById('season').value,
+                style: document.getElementById('style').value,
+                tags: [...tags],
+                photo: photoData
+            });
+
+            render();
+            hideModal();
+            scene.classList.add('abierto'); // Abre el armario automáticamente al guardar
+        });
+
+        // Botón exterior para alternar puertas
+        document.getElementById('toggleBtn').onclick = () => {
+            scene.classList.toggle('abierto');
+        };
+
+        // Cerrar modales con Escape
+        window.addEventListener('keydown', e => {
+            if(e.key === 'Escape'){ hideModal(); document.getElementById('details').classList.remove('show'); }
+        });
+
+        // Renderizado inicial
+        render();
+    </script>
+</body>
+</html>
