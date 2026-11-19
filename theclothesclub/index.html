@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="es">
 
@@ -686,7 +686,7 @@ footer a:hover {
             ⌂　inicio
         </a>
 
-        <a href="mi_armario.html" class="menu-button">
+        <a href="mi_armario.php" class="menu-button">
    	    ♕　mi armario
 	</a>
 
@@ -982,7 +982,7 @@ footer a:hover {
 
     <a href="#">inicio</a> |
 
-    <a href="mi_armario.html">mi armario</a> |
+    <a href="mi_armario.php">mi armario</a> |
 
     <a href="#">outfits</a> |
 
@@ -1062,7 +1062,7 @@ function enviarFormulario(formulario, archivo, esLogin) {
     .then(respuesta => respuesta.text())
     .then(resultado => {
         if (esLogin && resultado.trim() === "OK") {
-            window.location.href = "mi_armario.html";
+            window.location.href = "mi_armario.php";
             return;
         }
 
