@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armador de Outfits - The Clothes Club</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body { min-height: 100%; margin: 0; padding: 0; width: 100%; font-family: "Trebuchet MS", Arial, sans-serif; color: #fff; }
+        .imagen-fondo-fijada { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; pointer-events: none; }
+        .page { width: 1100px; max-width: 96%; margin: 20px auto; border: 3px solid #8F4D75; background-color: rgba(135,82,123,0.35); }
+
+        header { min-height: 160px; position: relative; text-align: center; padding: 25px 20px;
+                 background-color: #BD5579; border-bottom: 2px solid #9C5480;
+                 display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+        header:before { content: "✦"; position: absolute; left: 25px; top: 35px; color: #fff; font-size: 45px; }
+        header:after  { content: "✦"; position: absolute; right: 30px; top: 80px; color: #fff; font-size: 45px; }
+        .logo { font-family: script,cursive; font-size: 50px; font-weight: bold; letter-spacing: 3px; color: #fff;
+                animation: brillo 2s infinite alternate ease-in-out; }
+        @keyframes brillo {
+            0%,100% { text-shadow: 0 0 5px #fff, 0 0 10px #EDABBE, 0 0 20px #DE5C8F; }
+            50%      { text-shadow: 0 0 15px #fff, 0 0 25px #EDABBE, 0 0 40px #DE5C8F, 0 0 50px #fff; }
+        }
+        .subtitle { font-size: 18px; font-style: italic; color: #EDABBE; margin-top: 5px; }
+
+        nav { background-color: #AF719D; border-bottom: 2px solid #EDABBE; padding: 10px 15px;
+              display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        nav a { padding: 8px 14px; text-decoration: none; color: #fff; font-weight: bold; font-size: 14px;
+                border: 1px solid #fff; background-color: #87527B; transition: background 0.2s, transform 0.2s; }
+        nav a:hover  { background-color: #DE5C8F; transform: translateY(-2px); }
+        nav a.activo { background-color: #CB1857; border: 2px solid #EDABBE; }
+
+        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 18px; }
+
+        .panel { background-color: #D46A8F; border: 2px solid #EDABBE; padding: 20px; box-shadow: 0 4px 12px rgba(49,0,11,.35); }
+        .panel h2 { margin-top: 0; color: #fff; font-size: 20px; border-bottom: 2px solid #EDABBE; padding-bottom: 8px; }
+        .panel p  { color: #fff; font-size: 13px; margin: 0 0 10px; }
+
+        .categoria h3 { color: #EDABBE; font-size: 15px; margin: 14px 0 6px; border-left: 3px solid #CB1857; padding-left: 8px; }
+
+        .item-ropa { display: inline-block; background: #87527B; border: 1px solid #EDABBE;
+                     padding: 6px 12px; margin: 3px; cursor: pointer; font-size: 13px;
+                     transition: background .2s, transform .1s; }
+        .item-ropa:hover { background: #CB1857; transform: scale(1.03); }
+        .item-ropa.seleccionado { background: #CB1857; border-color: #CDEBFC; font-weight: bold; }
+
+        .slot-outfit { border: 2px dashed #EDABBE; color: #EDABBE; padding: 12px 14px;
+                       margin-bottom: 10px; min-height: 48px;
+                       display: flex; justify-content: space-between; align-items: center; }
+        .slot-outfit.lleno { border-style: solid; border-color: #CDEBFC; background-color: #31000B;
+                             color: #fff; box-shadow: 2px 2px 0 #CB1857; }
+
+        button.guardar { border: 2px solid #CB1857; background-color: #31000B; color: #fff;
+                         padding: 10px 20px; cursor: pointer; font-weight: bold;
+                         font-family: "Trebuchet MS",Arial,sans-serif; font-size: 14px;
+                         box-shadow: 3px 3px 0 rgb(41,19,5); transition: background .2s, transform .1s;
+                         width: 100%; margin-top: 10px; }
+        button.guardar:hover { background-color: #CB1857; transform: translate(-1px,-1px); }
+
+        button.quitar { background-color: #CB1857; color: #fff; border: 1px solid #EDABBE;
+                        padding: 3px 10px; font-size: 12px; cursor: pointer;
+                        font-family: "Trebuchet MS",Arial,sans-serif; }
+        button.quitar:hover { background-color: #FF1E6D; }
+
+        #outfitsGuardados { margin-top: 16px; }
+        .outfit-guardado { padding: 10px 12px; margin-top: 8px; background-color: #87527B;
+                           border: 1px solid #EDABBE; font-size: 13px; }
+
+        footer { background-color: #AF719D; padding: 18px; text-align: center; border-top: 2px solid #EDABBE; }
+        footer a { color: #fff; text-decoration: none; margin: 0 5px; font-weight: bold; }
+        footer a:hover { color: #CDEBFC; }
+        .copyright { color: #EDABBE; font-size: 12px; margin-top: 5px; }
+
+        @media(max-width:768px) { .layout { grid-template-columns: 1fr; } .logo { font-size: 36px; } }
+    </style>
+</head>
+<body>
+<img src="fondo.jpg" class="imagen-fondo-fijada" alt="Fondo">
+<div class="page">
+
+    <header>
+        <div class="logo">THE CLOTHES CLUB</div>
+        <div class="subtitle">tu armario, tu estilo, tu mundo</div>
+    </header>
+
+    <nav>
+        <a href="index.html">✦ Inicio</a>
+        <a href="mi_armario.html">♥ Mi Armario</a>
+        <a href="catalogo.php">1. Catálogo y Coincidencias</a>
+        <a href="outfits.html" class="activo">2. Armador de Outfits</a>
+    </nav>
+
+    <div class="layout">
+
+        <!-- PANEL IZQ: Prendas del armario por categoría -->
+        <div class="panel">
+            <h2>✿ 1. Elegí tus prendas</h2>
+            <p>Hacé clic en una prenda para agregarla al outfit:</p>
+
+            <div class="categoria"><h3>🧥 Abrigos</h3><div id="lista-abrigo"></div></div>
+            <div class="categoria"><h3>👕 Remeras / Camisas</h3><div id="lista-remera"></div></div>
+            <div class="categoria"><h3>👖 Pantalones / Faldas</h3><div id="lista-pantalon"></div></div>
+            <div class="categoria"><h3>👗 Vestidos</h3><div id="lista-vestido"></div></div>
+            <div class="categoria"><h3>👟 Calzado</h3><div id="lista-calzado"></div></div>
+        </div>
+
+        <!-- PANEL DER: Lienzo del outfit -->
+        <div class="panel">
+            <h2>✿ 2. Tu Outfit Actual</h2>
+
+            <div id="slot-abrigo"   class="slot-outfit"><span>🧥 Abrigo: <em>Vacío</em></span></div>
+            <div id="slot-remera"   class="slot-outfit"><span>👕 Parte superior: <em>Vacío</em></span></div>
+            <div id="slot-pantalon" class="slot-outfit"><span>👖 Parte inferior: <em>Vacío</em></span></div>
+            <div id="slot-vestido"  class="slot-outfit"><span>👗 Vestido: <em>Vacío</em></span></div>
+            <div id="slot-calzado"  class="slot-outfit"><span>👟 Calzado: <em>Vacío</em></span></div>
+
+            <button class="guardar" onclick="guardarOutfit()">♥ Guardar Combinación</button>
+
+            <div id="outfitsGuardados"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div>
+            <a href="index.html">inicio</a> |
+            <a href="mi_armario.html">mi armario</a> |
+            <a href="outfits.html">outfits</a> |
+            <a href="catalogo.php">catalogo</a>
+        </div>
+        <div class="copyright">© 2000-2005 THE CLOTHES CLUB - todos los derechos reservados</div>
+    </footer>
+</div>
+
+<script>
+const labels = {
+    abrigo:   '🧥 Abrigo',
+    remera:   '👕 Parte superior',
+    pantalon: '👖 Parte inferior',
+    vestido:  '👗 Vestido',
+    calzado:  '👟 Calzado'
+};
+
+const prendasEjemplo = [
+    // Abrigos
+    { id_prenda: 1,  nombre_prenda: 'Campera de Cuero Negra',     tipo: 'abrigo' },
+    { id_prenda: 2,  nombre_prenda: 'Campera Denim Azul',         tipo: 'campera' },
+    { id_prenda: 3,  nombre_prenda: 'Trench Camel',               tipo: 'trench' },
+    { id_prenda: 4,  nombre_prenda: 'Blazer Sastrero Negro',      tipo: 'blazer' },
+    { id_prenda: 5,  nombre_prenda: 'Cárdigan Tejido Crema',      tipo: 'cardigan' },
+    { id_prenda: 6,  nombre_prenda: 'Campera Bomber Rosa Y2K',    tipo: 'campera' },
+    { id_prenda: 7,  nombre_prenda: 'Tapado Paño Bordó',          tipo: 'abrigo' },
+
+    // Remeras / Camisas / Buzos
+    { id_prenda: 8,  nombre_prenda: 'Remera Blanca Básica',       tipo: 'remera' },
+    { id_prenda: 9,  nombre_prenda: 'Remera Negra Oversized',     tipo: 'remera' },
+    { id_prenda: 10, nombre_prenda: 'Camisa Celeste Formal',      tipo: 'camisa' },
+    { id_prenda: 11, nombre_prenda: 'Blusa Blanca Romántica',     tipo: 'blusa' },
+    { id_prenda: 12, nombre_prenda: 'Top Rosa Y2K',               tipo: 'top' },
+    { id_prenda: 13, nombre_prenda: 'Top Corset Bordó',           tipo: 'top' },
+    { id_prenda: 14, nombre_prenda: 'Buzo Hoodie Gris',           tipo: 'buzo' },
+    { id_prenda: 15, nombre_prenda: 'Musculosa Celeste',          tipo: 'remera' },
+
+    // Pantalones / Faldas
+    { id_prenda: 16, nombre_prenda: 'Jean Azul Clásico',          tipo: 'jean' },
+    { id_prenda: 17, nombre_prenda: 'Jean Oxford Azul Y2K',       tipo: 'jean' },
+    { id_prenda: 18, nombre_prenda: 'Jean Skinny Negro',          tipo: 'jean' },
+    { id_prenda: 19, nombre_prenda: 'Pantalón de Vestir Negro',   tipo: 'pantalon' },
+    { id_prenda: 20, nombre_prenda: 'Pantalón Blanco Lino',       tipo: 'pantalon' },
+    { id_prenda: 21, nombre_prenda: 'Pantalón Cargo Verde',       tipo: 'cargo' },
+    { id_prenda: 22, nombre_prenda: 'Falda Mini Negra',           tipo: 'falda' },
+    { id_prenda: 23, nombre_prenda: 'Pollera Tableada Celeste',   tipo: 'falda' },
+    { id_prenda: 24, nombre_prenda: 'Pollera de Jean Azul',       tipo: 'falda' },
+
+    // Vestidos
+    { id_prenda: 25, nombre_prenda: 'Vestido Negro Formal',       tipo: 'vestido' },
+    { id_prenda: 26, nombre_prenda: 'Vestido Rojo Satinado',      tipo: 'vestido' },
+    { id_prenda: 27, nombre_prenda: 'Vestido Blanco de Verano',   tipo: 'vestido' },
+    { id_prenda: 28, nombre_prenda: 'Vestido Floreado Vintage',   tipo: 'vestido' },
+
+    // Calzado
+    { id_prenda: 29, nombre_prenda: 'Zapatillas Urbanas Blancas', tipo: 'zapatilla' },
+    { id_prenda: 30, nombre_prenda: 'Zapatillas Running Negras',  tipo: 'zapatilla' },
+    { id_prenda: 31, nombre_prenda: 'Botas de Cuero Marrones',    tipo: 'bota' },
+    { id_prenda: 32, nombre_prenda: 'Borcegos Negros Plataforma', tipo: 'bota' },
+    { id_prenda: 33, nombre_prenda: 'Mocasines Marrones',         tipo: 'mocasin' },
+    { id_prenda: 34, nombre_prenda: 'Sandalias Taco Negro',       tipo: 'sandalia' }
+];
+
+let outfitActual = { abrigo: null, remera: null, pantalon: null, vestido: null, calzado: null };
+
+function tipoASlot(tipo) {
+    if (!tipo) return null;
+    tipo = tipo.toLowerCase();
+    if (['abrigo','campera','blazer','saco','cardigan','trench','chaqueta','tapado'].some(k => tipo.includes(k))) return 'abrigo';
+    if (['remera','camisa','buzo','camiseta','blusa','top','musculosa','sweater'].some(k => tipo.includes(k)))    return 'remera';
+    if (['pantalon','jean','falda','pollera','jogger','cargo','short'].some(k => tipo.includes(k)))               return 'pantalon';
+    if (['vestido'].some(k => tipo.includes(k)))                                                                 return 'vestido';
+    if (['calzado','zapato','zapatilla','bota','borcego','mocasin','sandalia'].some(k => tipo.includes(k)))      return 'calzado';
+    return null;
+}
+
+function renderizarPrendas(prendas) {
+    // Limpiar contenedores antes de dibujar
+    Object.keys(labels).forEach(slot => {
+        const cont = document.getElementById('lista-' + slot);
+        if (cont) cont.innerHTML = '';
+    });
+
+    prendas.forEach(p => {
+        const slot = tipoASlot(p.tipo);
+        const contenedor = document.getElementById('lista-' + slot);
+        if (!contenedor) return;
+
+        const btn = document.createElement('div');
+        btn.className = 'item-ropa';
+        btn.textContent = p.nombre_prenda;
+        btn.dataset.id     = p.id_prenda;
+        btn.dataset.slot   = slot;
+        btn.dataset.nombre = p.nombre_prenda;
+        btn.onclick = () => seleccionar(btn, p);
+        contenedor.appendChild(btn);
+    });
+}
+
+// Intentar cargar desde la BD; si falla o está vacía, usar prendas de ejemplo
+fetch('get_prendas.php')
+    .then(r => r.json())
+    .then(prendas => {
+        if (Array.isArray(prendas) && prendas.length > 0) {
+            renderizarPrendas(prendas);
+        } else {
+            renderizarPrendas(prendasEjemplo);
+        }
+    })
+    .catch(() => {
+        renderizarPrendas(prendasEjemplo);
+    });
+
+function seleccionar(btn, prenda) {
+    const slot = btn.dataset.slot;
+
+    // Si ya estaba seleccionada esa misma prenda, la quita
+    if (outfitActual[slot] && outfitActual[slot].id === prenda.id_prenda) {
+        quitar(slot);
+        return;
+    }
+
+    // Desmarcar anterior del mismo slot
+    document.querySelectorAll(`#lista-${slot} .item-ropa`).forEach(b => b.classList.remove('seleccionado'));
+    btn.classList.add('seleccionado');
+
+    outfitActual[slot] = { id: prenda.id_prenda, nombre: prenda.nombre_prenda, slot };
+    actualizarVista();
+}
+
+function quitar(slot) {
+    outfitActual[slot] = null;
+    document.querySelectorAll(`#lista-${slot} .item-ropa`).forEach(b => b.classList.remove('seleccionado'));
+    actualizarVista();
+}
+
+function actualizarVista() {
+    for (const [slot, prenda] of Object.entries(outfitActual)) {
+        const el = document.getElementById('slot-' + slot);
+        if (prenda) {
+            el.classList.add('lleno');
+            el.innerHTML = `<span><strong>${prenda.nombre}</strong></span>
+                            <button class="quitar" onclick="quitar('${slot}')">Quitar</button>`;
+        } else {
+            el.classList.remove('lleno');
+            el.innerHTML = `<span>${labels[slot]}: <em>Vacío</em></span>`;
+        }
+    }
+}
+
+function guardarOutfit() {
+    const elegidas = Object.values(outfitActual).filter(p => p !== null);
+    if (!elegidas.length) {
+        alert('Seleccioná al menos una prenda antes de guardar.');
+        return;
+    }
+    const resumen = elegidas.map(p => p.nombre).join(' + ');
+    const item = document.createElement('div');
+    item.className = 'outfit-guardado';
+    item.innerHTML = `<strong>♥ Outfit guardado:</strong> ${resumen}`;
+    document.getElementById('outfitsGuardados').prepend(item);
+
+    // Limpiar selección
+    Object.keys(outfitActual).forEach(s => quitar(s));
+}
+</script>
+</body>
+</html>

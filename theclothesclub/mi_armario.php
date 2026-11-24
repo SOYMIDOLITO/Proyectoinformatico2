@@ -9,10 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
-// Comprobar que el usuario inició sesión
+// Usar usuario demo si no hay sesión activa
 if (!isset($_SESSION["id_usuario"])) {
-    header("Location: index.html");
-    exit;
+    $_SESSION["id_usuario"] = 1;
 }
 
 $id_usuario = (int)$_SESSION["id_usuario"];
@@ -30,12 +29,12 @@ $sql_prendas = "SELECT
     p.descripcion,
     GROUP_CONCAT(e.nombre_etiqueta SEPARATOR ', ') AS etiquetas
 
-    FROM Prendas p
+    FROM prendas p
 
-    LEFT JOIN Prenda_Etiqueta pe
+    LEFT JOIN prenda_etiqueta pe
     ON p.id_prenda = pe.id_prenda
 
-    LEFT JOIN Etiquetas e
+    LEFT JOIN etiquetas e
     ON pe.id_etiqueta = e.id_etiqueta
 
     WHERE p.id_usuario = ?
@@ -595,8 +594,8 @@ while ($fila = mysqli_fetch_assoc($resultado_prendas)) {
 
         <div>
             <a href="index.html">inicio</a> |
-            <a href="#">mi armario</a> |
-            <a href="#">outfits</a> |
+            <a href="mi_armario.php">mi armario</a> |
+            <a href="outfits.html">outfits</a> |
             <a href="catalogo.html">catalogo</a> |
             <a href="#">comunidad</a> |
             <a href="#">mi perfil</a> |
@@ -1303,3 +1302,6 @@ while ($fila = mysqli_fetch_assoc($resultado_prendas)) {
 </body>
 
 </html>
+
+
+

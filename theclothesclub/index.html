@@ -387,7 +387,7 @@ input {
 
     border: 2px solid #DE5C8F;
 
-    background-color: ##FFFFFF;
+    background-color: #FFFFFF;
 
     color: #411E57;
 
@@ -460,7 +460,6 @@ input:focus {
 
 .news span {
     color: #AF719D;
-;
 }
 
 
@@ -663,7 +662,7 @@ footer a:hover {
 </div>
 
 <div class="sparkle">
-    ✦　✧　★　✦　✧
+    ✦ ✧ ★ ✦ ✧
 </div>
 
 
@@ -683,31 +682,31 @@ footer a:hover {
     <div class="menu">
 
         <a href="#" class="menu-button">
-            ⌂　inicio
+            ⌂ inicio
         </a>
 
-        <a href="mi_armario.php" class="menu-button">
-   	    ♕　mi armario
-	</a>
+        <a href="mi_armario.html" class="menu-button">
+            ♕ mi armario
+        </a>
 
-        <a href="#" class="menu-button">
-            ♧　outfits
+        <a href="outfits.html" class="menu-button">
+            ♧ outfits
         </a>
 
         <a href="catalogo.html" class="menu-button">
-            ◉　catalogo
+            ◉ catalogo
         </a>
 
         <a href="#" class="menu-button">
-            ♟　comunidad
+            ♟ comunidad
         </a>
 
         <a href="#" class="menu-button">
-            ★　mi perfil
+            ★ mi perfil
         </a>
 
         <a href="#" class="menu-button">
-            ?　ayuda
+            ? ayuda
         </a>
 
     </div>
@@ -764,9 +763,7 @@ footer a:hover {
 
 <section class="features">
 
-
     <div class="feature">
-
         <h3>
             mi armario
         </h3>
@@ -781,15 +778,12 @@ footer a:hover {
             te guste.
         </p>
 
-        <span class="more">
+        <a href="mi_armario.html" class="more">
             »»
-        </span>
-
+        </a>
     </div>
 
-
     <div class="feature">
-
         <h3>
             outfits
         </h3>
@@ -804,38 +798,32 @@ footer a:hover {
             en tu armario.
         </p>
 
-        <span class="more">
+        <a href="outfits.html" class="more">
             »»
-        </span>
-
+        </a>
     </div>
 
-
     <div class="feature">
-
         <h3>
-            colores
+            Catalogo
         </h3>
 
         <div class="icon">
-            🎨
+           ✨
         </div>
 
         <p>
-            Descubrí gamas de colores
+            Descubrí prendas 
             que combinan con vos
             y tu estilo.
         </p>
 
-        <span class="more">
+        <a href="catalogo.html" class="more">
             »»
-        </span>
-
+        </a>
     </div>
 
-
     <div class="feature">
-
         <h3>
             comunidad
         </h3>
@@ -850,15 +838,12 @@ footer a:hover {
             mismos gustos.
         </p>
 
-        <span class="more">
+        <a href="comunidad.html" class="more">
             »»
-        </span>
-
+        </a>
     </div>
 
-
     <div class="feature">
-
         <h3>
             perfil
         </h3>
@@ -873,15 +858,12 @@ footer a:hover {
             tu estilo único.
         </p>
 
-        <span class="more">
+        <a href="perfil.html" class="more">
             »»
-        </span>
-
+        </a>
     </div>
 
-
 </section>
-
 
 </main>
 
@@ -969,6 +951,7 @@ footer a:hover {
         ver más novedades >>
     </p>
 
+
 </div>
 
 
@@ -982,7 +965,7 @@ footer a:hover {
 
     <a href="#">inicio</a> |
 
-    <a href="mi_armario.php">mi armario</a> |
+    <a href="mi_armario.html">mi armario</a> |
 
     <a href="#">outfits</a> |
 
@@ -1062,7 +1045,7 @@ function enviarFormulario(formulario, archivo, esLogin) {
     .then(respuesta => respuesta.text())
     .then(resultado => {
         if (esLogin && resultado.trim() === "OK") {
-            window.location.href = "mi_armario.php";
+            window.location.href = "mi_armario.html";
             return;
         }
 

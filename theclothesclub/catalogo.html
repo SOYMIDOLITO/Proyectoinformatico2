@@ -1,33 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mi armario</title>
-
+    <title>Catálogo y Coincidencia de Etiquetas - The Clothes Club</title>
     <style>
-
         * {
             box-sizing: border-box;
         }
 
         html, body {
-            height: 100%;
+            min-height: 100%;
             margin: 0;
             padding: 0;
             width: 100%;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: white;
             font-family: "Trebuchet MS", Arial, sans-serif;
+            color: #FFFFFF;
         }
 
         .imagen-fondo-fijada {
@@ -42,85 +30,450 @@
             pointer-events: none;
         }
 
+        .page {
+            width: 1100px;
+            max-width: 96%;
+            margin: 20px auto;
+            border: 3px solid #8F4D75;
+            background-color: rgba(135, 82, 123, 0.35);
+        }
+
         header {
             min-height: 180px;
             position: relative;
             text-align: center;
             padding: 30px 20px 20px;
             overflow: hidden;
-            background-color:rgb(1,193,255);
-            border-bottom: 2px solid #CB1857;
-        }
-
-        .logo {
-            font-family: serif;
-            font-size: 55px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            color:rgb(238,253,30);
-            position: relative;
-            display: inline-block;
-            text-align: center;
-            animation: brilloTexto 2s infinite alternate ease-in-out;
-        }
-
-        @keyframes brilloTexto {
-
-            0%, 100% {
-                text-shadow: 0 0 5px #FF1E6D,
-                0 0 10px #CB1857,
-                0 0 20px #FF1E6D;
-            }
-
-            50% {
-                text-shadow: 0 0 15px #CB1857,
-                0 0 25px #FF1E6D,
-                0 0 40px #8AAFD4,
-                0 0 50px #CB1857;
-            }
-        }
-
-        .page {
-            width: 100%;
-            margin: 0;
-            padding: 20px;
-            flex: 1;
+            background-color: #BD5579;
+            border-bottom: 2px solid #9C5480;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        } 
+        }
 
- 
+        header:before,
+        header:after {
+            content: "✦";
+            position: absolute;
+            color: #FFFFFF;
+            font-size: 45px;
+        }
 
+        header:before {
+            left: 25px;
+            top: 35px;
+        }
+
+        header:after {
+            right: 30px;
+            top: 80px;
+        }
+
+        .logo {
+            font-family: script, cursive;
+            font-size: 55px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #FFFFFF;
+            animation: brilloTexto 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes brilloTexto {
+            0%, 100% {
+                text-shadow:
+                    0 0 5px #FFFFFF,
+                    0 0 10px #EDABBE,
+                    0 0 20px #DE5C8F;
+            }
+            50% {
+                text-shadow:
+                    0 0 15px #FFFFFF,
+                    0 0 25px #EDABBE,
+                    0 0 40px #DE5C8F,
+                    0 0 50px #FFFFFF;
+            }
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-style: italic;
+            color: #EDABBE;
+            margin-top: 5px;
+        }
+
+        nav {
+            background-color: #AF719D;
+            border-bottom: 2px solid #EDABBE;
+            padding: 12px 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        nav a {
+            display: inline-block;
+            padding: 8px 14px;
+            text-decoration: none;
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 15px;
+            border: 1px solid #FFFFFF;
+            background-color: #87527B;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        nav a:hover {
+            background-color: #DE5C8F;
+            transform: translateY(-2px);
+        }
+
+        nav a.activo {
+            background-color: #CB1857;
+            border: 2px solid #EDABBE;
+        }
+
+        .contenedor {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 16px;
+            padding: 18px;
+        }
+
+        .panel {
+            background-color: #D46A8F;
+            border: 2px solid #EDABBE;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(49, 0, 11, 0.35);
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            color: #FFFFFF;
+            font-size: 22px;
+            border-bottom: 2px solid #EDABBE;
+            padding-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(49, 0, 11, 0.6);
+        }
+
+        .panel p {
+            color: #FFFFFF;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .grid-ropa {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .tarjeta {
+            background-color: #8D537C;
+            border: 2px solid #EDABBE;
+            padding: 15px;
+            transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-2px);
+            background-color: #872D72;
+        }
+
+        .tarjeta h4 {
+            margin: 0 0 10px 0;
+            color: #FFFFFF;
+            font-size: 16px;
+        }
+
+        .tarjeta.coincide {
+            border-color: #CDEBFC;
+            background-color: #31000B;
+            box-shadow: 0 0 12px rgba(255, 30, 109, 0.65);
+        }
+
+        .tarjeta.opaca {
+            opacity: 0.4;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            background: #CDEBFC;
+            color: #291305;
+            border: 1px solid #8AAFD4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .etiqueta.match {
+            background: #CB1857;
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+            box-shadow: 0 0 6px #FF1E6D;
+        }
+
+        .texto-coincide {
+            color: #CDEBFC;
+            font-size: 13px;
+            margin: 10px 0 0 0;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #31000B;
+            color: #FFFFFF;
+            border: 2px solid #EDABBE;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #CDEBFC;
+        }
+
+        #detalleExterna {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #87527B;
+            border: 1px solid #EDABBE;
+        }
+
+        #detalleExterna:empty {
+            display: none;
+        }
+
+        #detalleExterna h4 {
+            margin: 0 0 8px 0;
+            color: #EDABBE;
+        }
+
+        footer {
+            background-color: #AF719D;
+            padding: 20px;
+            text-align: center;
+            color: #31000B;
+            border-top: 2px solid #EDABBE;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #CDEBFC;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            color: #EDABBE;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .contenedor {
+                grid-template-columns: 1fr;
+            }
+            .logo {
+                font-size: 38px;
+            }
+        }
     </style>
-
 </head>
-
 <body>
+    <img src="fondo.jpg" class="imagen-fondo-fijada" alt="Fondo">
 
-    <img src="fondo3.jpg" class="imagen-fondo-fijada" alt="Fondo">
+    <div class="page">
+        <header>
+            <div class="logo">THE CLOTHES CLUB</div>
+            <div class="subtitle">tu armario, tu estilo, tu mundo</div>
+        </header>
 
-    <header>
-        <div class="logo">CATALOGO</div>
-    </header>
- <footer>
+        <nav>
+            <a href="index.html">✦ Inicio</a>
+            <a href="mi_armario.html">♥ Mi Armario</a>
+            <a href="catalogo.html" class="activo">1. Catálogo y Coincidencias</a>
+            <a href="outfits.html">2. Armador de Outfits</a>
+        </nav>
 
-        <div>
-            <a href="index.html">inicio</a> |
-            <a href="mi_armario.php">mi armario</a> |
-            <a href="#">outfits</a> |
-            <a href="#">catalogo</a> |
-            <a href="#">comunidad</a> |
-            <a href="#">mi perfil</a> |
-            <a href="#">ayuda</a> |
-            <a href="#">contacto</a>
+        <div class="contenedor">
+            <!-- Base de datos externa (Tienda / Nueva prenda) -->
+            <div class="panel">
+                <h2>✿ Prenda Externa (BD 2)</h2>
+                <p>Elegí una prenda nueva para ver con qué combina de tu ropa:</p>
+                <select id="selectorExterna" onchange="compararPrendas()">
+                    <option value="">-- Seleccionar prenda --</option>
+                </select>
+                <div id="detalleExterna"></div>
+            </div>
+
+            <!-- Base de datos propia (Mi Guardarropa) -->
+            <div class="panel">
+                <h2>✿ Mi Guardarropa (BD 1)</h2>
+                <div id="catalogoPropio" class="grid-ropa"></div>
+            </div>
         </div>
 
-        <div class="copyright">
-            © 2000-2005 THE CLOTHES CLUB - todos los derechos reservados
-        </div>
+        <footer>
+            <div>
+                <a href="index.html">inicio</a> |
+                <a href="mi_armario.html">mi armario</a> |
+                <a href="outfits.html">outfits</a> |
+                <a href="catalogo.html">catalogo</a>
+            </div>
+            <div class="copyright">© 2000-2005 THE CLOTHES CLUB - todos los derechos reservados</div>
+        </footer>
+    </div>
 
-    </footer>
+    <script>
+        // Simulación Base de Datos 1: Tu ropa guardada
+        const miRopaBD = [
+            { id: 1,  nombre: "Campera de Cuero Negra",     tipo: "abrigo",    etiquetas: ["negro", "urbano", "invierno", "otoño"] },
+            { id: 2,  nombre: "Campera Denim Azul",         tipo: "campera",   etiquetas: ["azul", "casual", "otoño", "primavera"] },
+            { id: 3,  nombre: "Trench Camel",               tipo: "trench",    etiquetas: ["camel", "formal", "otoño", "primavera"] },
+            { id: 4,  nombre: "Blazer Sastrero Negro",      tipo: "blazer",    etiquetas: ["negro", "formal", "todo-el-año"] },
+            { id: 5,  nombre: "Cárdigan Tejido Crema",      tipo: "cardigan",  etiquetas: ["crema", "casual", "primavera", "otoño"] },
+            { id: 6,  nombre: "Campera Bomber Rosa Y2K",    tipo: "campera",   etiquetas: ["rosa", "y2k", "primavera", "otoño"] },
+            { id: 7,  nombre: "Tapado Paño Bordó",          tipo: "abrigo",    etiquetas: ["bordo", "vintage", "invierno", "otoño"] },
+            { id: 8,  nombre: "Remera Blanca Básica",       tipo: "remera",    etiquetas: ["blanco", "casual", "verano", "todo-el-año"] },
+            { id: 9,  nombre: "Remera Negra Oversized",     tipo: "remera",    etiquetas: ["negro", "casual", "urbano", "todo-el-año"] },
+            { id: 10, nombre: "Camisa Celeste Formal",      tipo: "camisa",    etiquetas: ["celeste", "formal", "primavera", "verano"] },
+            { id: 11, nombre: "Blusa Blanca Romántica",     tipo: "blusa",     etiquetas: ["blanco", "formal", "primavera", "verano"] },
+            { id: 12, nombre: "Top Rosa Y2K",               tipo: "top",       etiquetas: ["rosa", "y2k", "verano", "primavera"] },
+            { id: 13, nombre: "Top Corset Bordó",           tipo: "top",       etiquetas: ["bordo", "y2k", "vintage", "noche"] },
+            { id: 14, nombre: "Buzo Hoodie Gris",           tipo: "buzo",      etiquetas: ["gris", "casual", "invierno", "otoño"] },
+            { id: 15, nombre: "Musculosa Celeste",          tipo: "remera",    etiquetas: ["celeste", "casual", "verano", "primavera"] },
+            { id: 16, nombre: "Jean Azul Clásico",          tipo: "jean",      etiquetas: ["azul", "casual", "todo-el-año"] },
+            { id: 17, nombre: "Jean Oxford Azul Y2K",       tipo: "jean",      etiquetas: ["azul", "vintage", "y2k", "todo-el-año"] },
+            { id: 18, nombre: "Jean Skinny Negro",          tipo: "jean",      etiquetas: ["negro", "urbano", "todo-el-año"] },
+            { id: 19, nombre: "Pantalón de Vestir Negro",   tipo: "pantalon",  etiquetas: ["negro", "formal", "noche", "todo-el-año"] },
+            { id: 20, nombre: "Pantalón Blanco Lino",       tipo: "pantalon",  etiquetas: ["blanco", "casual", "primavera", "verano"] },
+            { id: 21, nombre: "Pantalón Cargo Verde",       tipo: "cargo",     etiquetas: ["verde", "casual", "otoño", "primavera"] },
+            { id: 22, nombre: "Falda Mini Negra",           tipo: "falda",     etiquetas: ["negro", "urbano", "noche", "todo-el-año"] },
+            { id: 23, nombre: "Pollera Tableada Celeste",   tipo: "falda",     etiquetas: ["celeste", "y2k", "verano", "primavera"] },
+            { id: 24, nombre: "Pollera de Jean Azul",       tipo: "falda",     etiquetas: ["azul", "vintage", "primavera", "verano"] },
+            { id: 25, nombre: "Vestido Negro Formal",       tipo: "vestido",   etiquetas: ["negro", "formal", "noche", "todo-el-año"] },
+            { id: 26, nombre: "Vestido Rojo Satinado",      tipo: "vestido",   etiquetas: ["rojo", "y2k", "vintage", "noche"] },
+            { id: 27, nombre: "Vestido Blanco de Verano",   tipo: "vestido",   etiquetas: ["blanco", "casual", "verano", "primavera"] },
+            { id: 28, nombre: "Vestido Floreado Vintage",   tipo: "vestido",   etiquetas: ["vintage", "casual", "primavera", "verano"] },
+            { id: 29, nombre: "Zapatillas Urbanas Blancas", tipo: "zapatilla", etiquetas: ["blanco", "casual", "urbano", "todo-el-año"] },
+            { id: 30, nombre: "Zapatillas Running Negras",  tipo: "zapatilla", etiquetas: ["negro", "deportivo", "todo-el-año"] },
+            { id: 31, nombre: "Botas de Cuero Marrones",    tipo: "bota",      etiquetas: ["marron", "urbano", "otoño", "invierno"] },
+            { id: 32, nombre: "Borcegos Negros Plataforma", tipo: "bota",      etiquetas: ["negro", "urbano", "invierno", "otoño"] },
+            { id: 33, nombre: "Mocasines Marrones",         tipo: "mocasin",   etiquetas: ["marron", "formal", "todo-el-año"] },
+            { id: 34, nombre: "Sandalias Taco Negro",       tipo: "sandalia",  etiquetas: ["negro", "formal", "noche", "todo-el-año"] }
+        ];
+
+        // Simulación Base de Datos 2: Ropa externa a comparar
+        const ropaExternaBD = [
+            { id: 101, nombre: "Campera de Cuero Negra",     etiquetas: ["negro", "urbano", "invierno", "otoño"] },
+            { id: 102, nombre: "Campera Denim Azul",         etiquetas: ["azul", "casual", "otoño", "primavera"] },
+            { id: 103, nombre: "Trench Camel",               etiquetas: ["camel", "formal", "otoño", "primavera"] },
+            { id: 104, nombre: "Blazer Sastrero Negro",      etiquetas: ["negro", "formal", "todo-el-año"] },
+            { id: 105, nombre: "Cárdigan Tejido Crema",      etiquetas: ["crema", "casual", "primavera", "otoño"] },
+            { id: 106, nombre: "Campera Bomber Rosa Y2K",    etiquetas: ["rosa", "y2k", "primavera", "otoño"] },
+            { id: 107, nombre: "Tapado Paño Bordó",          etiquetas: ["bordo", "vintage", "invierno", "otoño"] },
+            { id: 108, nombre: "Remera Blanca Básica",       etiquetas: ["blanco", "casual", "verano", "todo-el-año"] },
+            { id: 109, nombre: "Remera Negra Oversized",     etiquetas: ["negro", "casual", "urbano", "todo-el-año"] },
+            { id: 110, nombre: "Camisa Celeste Formal",      etiquetas: ["celeste", "formal", "primavera", "verano"] },
+            { id: 111, nombre: "Blusa Blanca Romántica",     etiquetas: ["blanco", "formal", "primavera", "verano"] },
+            { id: 112, nombre: "Top Rosa Y2K",               etiquetas: ["rosa", "y2k", "verano", "primavera"] },
+            { id: 113, nombre: "Top Corset Bordó",           etiquetas: ["bordo", "y2k", "vintage", "noche"] },
+            { id: 114, nombre: "Buzo Hoodie Gris",           etiquetas: ["gris", "casual", "invierno", "otoño"] },
+            { id: 115, nombre: "Musculosa Celeste",          etiquetas: ["celeste", "casual", "verano", "primavera"] },
+            { id: 116, nombre: "Jean Azul Clásico",          etiquetas: ["azul", "casual", "todo-el-año"] },
+            { id: 117, nombre: "Jean Oxford Azul Y2K",       etiquetas: ["azul", "vintage", "y2k", "todo-el-año"] },
+            { id: 118, nombre: "Jean Skinny Negro",          etiquetas: ["negro", "urbano", "todo-el-año"] },
+            { id: 119, nombre: "Pantalón de Vestir Negro",   etiquetas: ["negro", "formal", "noche", "todo-el-año"] },
+            { id: 120, nombre: "Pantalón Blanco Lino",       etiquetas: ["blanco", "casual", "primavera", "verano"] },
+            { id: 121, nombre: "Pantalón Cargo Verde",       etiquetas: ["verde", "casual", "otoño", "primavera"] },
+            { id: 122, nombre: "Falda Mini Negra",           etiquetas: ["negro", "urbano", "noche", "todo-el-año"] },
+            { id: 123, nombre: "Pollera Tableada Celeste",   etiquetas: ["celeste", "y2k", "verano", "primavera"] },
+            { id: 124, nombre: "Pollera de Jean Azul",       etiquetas: ["azul", "vintage", "primavera", "verano"] },
+            { id: 125, nombre: "Vestido Negro Formal",       etiquetas: ["negro", "formal", "noche", "todo-el-año"] },
+            { id: 126, nombre: "Vestido Rojo Satinado",      etiquetas: ["rojo", "y2k", "vintage", "noche"] },
+            { id: 127, nombre: "Vestido Blanco de Verano",   etiquetas: ["blanco", "casual", "verano", "primavera"] },
+            { id: 128, nombre: "Vestido Floreado Vintage",   etiquetas: ["vintage", "casual", "primavera", "verano"] },
+            { id: 129, nombre: "Zapatillas Urbanas Blancas", etiquetas: ["blanco", "casual", "urbano", "todo-el-año"] },
+            { id: 130, nombre: "Zapatillas Running Negras",  etiquetas: ["negro", "deportivo", "todo-el-año"] },
+            { id: 131, nombre: "Botas de Cuero Marrones",    etiquetas: ["marron", "urbano", "otoño", "invierno"] },
+            { id: 132, nombre: "Borcegos Negros Plataforma", tipo: "bota", etiquetas: ["negro", "urbano", "invierno", "otoño"] },
+            { id: 133, nombre: "Mocasines Marrones",         etiquetas: ["marron", "formal", "todo-el-año"] },
+            { id: 134, nombre: "Sandalias Taco Negro",       etiquetas: ["negro", "formal", "noche", "todo-el-año"] }
+        ];
+
+        const selector = document.getElementById("selectorExterna");
+        const contenedorCatalogo = document.getElementById("catalogoPropio");
+        const detalleExterna = document.getElementById("detalleExterna");
+
+        // Cargar opciones en el select
+        ropaExternaBD.forEach(prenda => {
+            const option = document.createElement("option");
+            option.value = prenda.id;
+            option.textContent = prenda.nombre;
+            selector.appendChild(option);
+        });
+
+        // Mostrar mi catálogo inicialmente
+        function renderizarCatalogo(etiquetasBuscadas = []) {
+            contenedorCatalogo.innerHTML = "";
+
+            miRopaBD.forEach(prenda => {
+                // Buscar etiquetas que coinciden
+                const coincidencias = prenda.etiquetas.filter(tag => etiquetasBuscadas.includes(tag));
+                const hayMatch = coincidencias.length > 0;
+                const filtroActivo = etiquetasBuscadas.length > 0;
+
+                const card = document.createElement("div");
+                card.className = `tarjeta ${filtroActivo ? (hayMatch ? 'coincide' : 'opaca') : ''}`;
+
+                // Generar HTML de etiquetas resaltando las que coinciden
+                const tagsHTML = prenda.etiquetas.map(tag => {
+                    const esMatch = coincidencias.includes(tag);
+                    return `<span class="etiqueta ${esMatch ? 'match' : ''}">#${tag}</span>`;
+                }).join("");
+
+                card.innerHTML = `
+                    <h4>${prenda.nombre}</h4>
+                    <div>${tagsHTML}</div>
+                    ${hayMatch ? `<p class="texto-coincide"><strong>Coincide en:</strong> ${coincidencias.join(", ")}</p>` : ''}
+                `;
+                contenedorCatalogo.appendChild(card);
+            });
+        }
+
+        function compararPrendas() {
+            const idSeleccionado = parseInt(selector.value, 10);
+            if (!idSeleccionado) {
+                detalleExterna.innerHTML = "";
+                renderizarCatalogo([]);
+                return;
+            }
+
+            const prenda = ropaExternaBD.find(p => p.id === idSeleccionado);
+            detalleExterna.innerHTML = `
+                <h4>Etiquetas de esta prenda:</h4>
+                <div>${prenda.etiquetas.map(t => `<span class="etiqueta">#${t}</span>`).join("")}</div>
+            `;
+
+            renderizarCatalogo(prenda.etiquetas);
+        }
+
+        renderizarCatalogo();
+    </script>
 </body>
 </html>

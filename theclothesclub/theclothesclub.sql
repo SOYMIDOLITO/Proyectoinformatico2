@@ -1,56 +1,57 @@
--- ========================================================
--- BASE DE DATOS: The Clothes Club
--- ========================================================
+-- The Clothes Club database schema
+CREATE DATABASE IF NOT EXISTS theclothesclub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE theclothesclub;
 
-CREATE DATABASE IF NOT EXISTS `theclothesclub`
-DEFAULT CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
+-- Users table
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario INT(4) PRIMARY KEY,
+    nombre_usuario VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
 
-USE `theclothesclub`;
+-- Prendas (garments) table
+CREATE TABLE IF NOT EXISTS Prendas (
+    id_prenda INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    nombre_prenda VARCHAR(150) NOT NULL,
+    foto VARCHAR(255),
+    tipo VARCHAR(50) NOT NULL,
+    color VARCHAR(50),
+    estilo VARCHAR(50),
+    temporada VARCHAR(100),
+    descripcion TEXT,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
--- 1. Tabla de Usuarios
-CREATE TABLE IF NOT EXISTS `usuarios` (
-    `id_usuario` INT(4) NOT NULL,
-    `nombre_usuario` VARCHAR(100) NOT NULL,
-    `contrasena` VARCHAR(255) NOT NULL,
-    `fecha_registro` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Etiquetas (tags) table
+CREATE TABLE IF NOT EXISTS Etiquetas (
+    id_etiqueta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_etiqueta VARCHAR(100) UNIQUE NOT NULL
+) ENGINE=InnoDB;
 
--- 2. Tabla de Prendas
-CREATE TABLE IF NOT EXISTS `Prendas` (
-    `id_prenda` INT AUTO_INCREMENT PRIMARY KEY,
-    `id_usuario` INT(4) NOT NULL,
-    `nombre_prenda` VARCHAR(150) NOT NULL,
-    `foto` VARCHAR(255) DEFAULT NULL,
-    `tipo` VARCHAR(50) NOT NULL,
-    `color` VARCHAR(50) DEFAULT NULL,
-    `estilo` VARCHAR(50) DEFAULT NULL,
-    `temporada` VARCHAR(50) DEFAULT NULL,
-    `descripcion` TEXT DEFAULT NULL,
-    `fecha_creacion` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    INDEX `idx_usuario` (`id_usuario`),
-    CONSTRAINT `fk_prendas_usuario` 
-        FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) 
-        ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Relación prenda‑etiqueta
+CREATE TABLE IF NOT EXISTS Prenda_Etiqueta (
+    id_prenda INT NOT NULL,
+    id_etiqueta INT NOT NULL,
+    PRIMARY KEY (id_prenda, id_etiqueta),
+    FOREIGN KEY (id_prenda) REFERENCES Prendas(id_prenda) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_etiqueta) REFERENCES Etiquetas(id_etiqueta) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
--- 3. Tabla de Etiquetas
-CREATE TABLE IF NOT EXISTS `Etiquetas` (
-    `id_etiqueta` INT AUTO_INCREMENT PRIMARY KEY,
-    `nombre_etiqueta` VARCHAR(100) NOT NULL UNIQUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Outfits table
+CREATE TABLE IF NOT EXISTS Outfits (
+    id_outfit INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
--- 4. Tabla Intermedia Prenda_Etiqueta
-CREATE TABLE IF NOT EXISTS `Prenda_Etiqueta` (
-    `id_prenda` INT NOT NULL,
-    `id_etiqueta` INT NOT NULL,
-    PRIMARY KEY (`id_prenda`, `id_etiqueta`),
-    INDEX `idx_pe_etiqueta` (`id_etiqueta`),
-    CONSTRAINT `fk_pe_prenda` 
-        FOREIGN KEY (`id_prenda`) REFERENCES `Prendas` (`id_prenda`) 
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `fk_pe_etiqueta` 
-        FOREIGN KEY (`id_etiqueta`) REFERENCES `Etiquetas` (`id_etiqueta`) 
-        ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Relación outfit‑prenda
+CREATE TABLE IF NOT EXISTS Outfit_Garment (
+    id_outfit INT NOT NULL,
+    id_prenda INT NOT NULL,
+    PRIMARY KEY (id_outfit, id_prenda),
+    FOREIGN KEY (id_outfit) REFERENCES Outfits(id_outfit) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_prenda) REFERENCES Prendas(id_prenda) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
